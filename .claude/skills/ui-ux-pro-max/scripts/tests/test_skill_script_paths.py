@@ -32,7 +32,7 @@ SKILL_TREES = ("cli/assets/skills", ".claude/skills")
 # (Built from segments: the path contract in check-asset-sync.yml scans this file too.)
 PLUGIN_ONLY_FILE = Path(".claude") / "skills" / "ui-ux-pro-max" / "SKILL.md"
 INVOCATION = re.compile(r'(?<![\w/.-])(?:python3?|node|bash)\s+"?([^\s"`\']+\.(?:py|cjs|js|mjs|sh))')
-PLUGIN_ROOT = "${CLAUDE_PLUGIN_ROOT}/"
+PLUGIN_ROOT = "${CLAUDE_PLUGIN_ROOT:-.}/"
 
 
 def shipped_invocations():
