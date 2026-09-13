@@ -26,7 +26,7 @@ if ( ! $thig_items ) {
 <section class="section section--tight section--ambient" id="dampak">
 	<div class="wrap">
 		<?php if ( thig_opt( 'stats_title' ) ) : ?>
-			<div class="sec-head sec-head--center" data-reveal>
+			<div class="sec-head" data-reveal>
 				<h2><?php echo esc_html( thig_opt( 'stats_title' ) ); ?></h2>
 			</div>
 		<?php endif; ?>

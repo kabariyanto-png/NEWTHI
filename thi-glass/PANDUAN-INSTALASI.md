@@ -66,8 +66,9 @@ Jangan langsung aktifkan di situs yang sedang berjalan. Dua pilihan aman:
 1. **Identitas Situs** — unggah logo (PNG transparan, tinggi ±92px), isi judul & tagline.
 
 2. **THI Glass — Tampilan → Warna Merek**
-   Ganti warna bawaan (ungu/emas) dengan warna resmi THI.
-   Warna teks di atas tombol dipilih otomatis agar tetap terbaca.
+   Bawaannya sudah hijau `#1E5B3F` dan coklat `#7A4E2D`. Kalau THI punya kode
+   warna resmi yang berbeda, ganti di sini — warna teks di atas tombol dipilih
+   otomatis agar kontrasnya tetap memenuhi standar.
 
 3. **THI Glass — Beranda → 1. Hero**
    - Judul Utama, lalu isi **"Kata yang Diberi Gradien"** dengan satu kata dari
@@ -103,8 +104,8 @@ akan muncul di bawahnya.
 |---|---|
 | Tampilan polos tanpa gaya | Bersihkan cache: plugin cache (LiteSpeed/WP Rocket) → Purge All. Lalu Ctrl+Shift+R di browser. |
 | Layar putih total | Aktifkan debug: di `wp-config.php` ubah `WP_DEBUG` jadi `true`, buka lagi, catat pesannya. Ganti balik ke theme lama lewat File Manager: ganti nama folder `thi-glass` jadi `thi-glass-off`, WordPress otomatis kembali ke theme bawaan. |
-| Panel kaca terlihat buram total / teks sulit dibaca | Customizer → Efek Kaca → naikkan **Opasitas Panel Kaca** ke 70–80%. |
-| Halaman terasa berat di HP | Turunkan **Intensitas Blur** ke 10–12px, dan pastikan gambar hero di bawah 300 KB. |
+| Panel kaca terlihat buram / teks sulit dibaca | Customizer → Efek Kaca → naikkan **Opasitas Panel Kaca** (bawaan 78%). |
+| Halaman terasa berat di HP | Turunkan **Intensitas Blur** (bawaan 12px) ke 0–8px, dan pastikan gambar hero di bawah 300 KB. |
 | Menu tidak muncul | Tampilan → Menu → centang lokasi **Menu Utama** → Simpan. |
 | Kartu Program kosong | Belum ada pos di kategori yang dipilih. Buat pos, beri kategori itu. |
 
@@ -112,7 +113,7 @@ akan muncul di bawahnya.
 
 ## Yang perlu Anda putuskan
 
-Warna bawaan **ungu + emas** berasal dari sistem desain generik, **bukan warna resmi
-THI** — saya tidak bisa membuka `thi.or.id` dari lingkungan kerja saya, jadi belum tahu
-palet merek Anda. Ganti di **Customizer → THI Glass — Tampilan → Warna Merek**, atau
-kirimkan kode warna resmi THI dan saya sesuaikan langsung di kode sebagai bawaan.
+Hijau dan coklat sudah jadi bawaan. Nilai persisnya (`#1E5B3F` / `#7A4E2D`) saya
+pilih agar kontrasnya aman — saya belum bisa membuka `thi.or.id` dari lingkungan
+kerja saya, jadi belum tahu kode warna resmi THI. Kalau ada, kirimkan dan saya
+pasang sebagai bawaan; atau ganti sendiri lewat Customizer.

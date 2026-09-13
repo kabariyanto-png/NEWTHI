@@ -60,27 +60,27 @@ function thig_setup() {
 			array(
 				'name'  => __( 'Primer', 'thi-glass' ),
 				'slug'  => 'thig-primary',
-				'color' => thig_opt( 'color_primary', '#7C3AED' ),
+				'color' => thig_opt( 'color_primary', '#1E5B3F' ),
 			),
 			array(
 				'name'  => __( 'Sekunder', 'thi-glass' ),
 				'slug'  => 'thig-secondary',
-				'color' => thig_opt( 'color_secondary', '#A78BFA' ),
+				'color' => thig_opt( 'color_secondary', '#4E8C6A' ),
 			),
 			array(
 				'name'  => __( 'Aksen', 'thi-glass' ),
 				'slug'  => 'thig-accent',
-				'color' => thig_opt( 'color_accent', '#A16207' ),
+				'color' => thig_opt( 'color_accent', '#7A4E2D' ),
 			),
 			array(
 				'name'  => __( 'Teks', 'thi-glass' ),
 				'slug'  => 'thig-fg',
-				'color' => '#2E1065',
+				'color' => '#1C2B22',
 			),
 			array(
 				'name'  => __( 'Latar', 'thi-glass' ),
 				'slug'  => 'thig-bg',
-				'color' => '#FAF5FF',
+				'color' => '#FAF8F3',
 			),
 			array(
 				'name'  => __( 'Putih', 'thi-glass' ),
@@ -141,62 +141,62 @@ function thig_defaults() {
 
 	$defaults = array(
 		// Tampilan.
-		'color_primary'     => '#7C3AED',
-		'color_secondary'   => '#A78BFA',
-		'color_accent'      => '#A16207',
-		'glass_blur'        => 18,
-		'glass_opacity'     => 55,
-		'radius'            => 24,
+		'color_primary'     => '#1E5B3F',
+		'color_secondary'   => '#4E8C6A',
+		'color_accent'      => '#7A4E2D',
+		'glass_blur'        => 12,
+		'glass_opacity'     => 78,
+		'radius'            => 8,
 		'load_google_fonts' => true,
 
 		// Hero.
-		'hero_badge'        => __( 'Terbuka untuk kolaborasi 2026', 'thi-glass' ),
-		'hero_title'        => __( 'Membangun dampak yang bertahan lama', 'thi-glass' ),
-		'hero_title_accent' => __( 'dampak', 'thi-glass' ),
-		'hero_lead'         => __( 'Kami bekerja bersama komunitas, mitra, dan relawan untuk menghadirkan perubahan yang terukur dan berkelanjutan di seluruh Indonesia.', 'thi-glass' ),
-		'hero_cta1_text'    => __( 'Jelajahi Program', 'thi-glass' ),
+		'hero_badge'        => __( 'Organisasi Nirlaba', 'thi-glass' ),
+		'hero_title'        => __( 'Bekerja bersama masyarakat untuk perubahan yang berkelanjutan', 'thi-glass' ),
+		'hero_title_accent' => __( 'berkelanjutan', 'thi-glass' ),
+		'hero_lead'         => __( 'Kami menjalankan program pendidikan, pemberdayaan ekonomi, dan penguatan kapasitas organisasi masyarakat di berbagai daerah di Indonesia.', 'thi-glass' ),
+		'hero_cta1_text'    => __( 'Program Kami', 'thi-glass' ),
 		'hero_cta1_url'     => '#program',
 		'hero_cta2_text'    => __( 'Hubungi Kami', 'thi-glass' ),
 		'hero_cta2_url'     => '#kontak',
 
 		// Tentang.
 		'about_enable'      => true,
-		'about_eyebrow'     => __( 'Tentang Kami', 'thi-glass' ),
-		'about_title'       => __( 'Organisasi yang tumbuh bersama komunitasnya', 'thi-glass' ),
-		'about_text'        => __( 'Sejak berdiri, kami konsisten mendampingi program pendidikan, pemberdayaan ekonomi, dan penguatan kapasitas organisasi masyarakat sipil di berbagai daerah.', 'thi-glass' ),
+		'about_eyebrow'     => __( 'Profil', 'thi-glass' ),
+		'about_title'       => __( 'Tentang organisasi kami', 'thi-glass' ),
+		'about_text'        => __( 'Sejak berdiri, kami mendampingi program pendidikan, pemberdayaan ekonomi, dan penguatan kapasitas organisasi masyarakat sipil di berbagai daerah.', 'thi-glass' ),
 		'about_cta_text'    => __( 'Selengkapnya', 'thi-glass' ),
 
 		// Program.
 		'program_enable'    => true,
-		'program_eyebrow'   => __( 'Apa yang Kami Kerjakan', 'thi-glass' ),
-		'program_title'     => __( 'Program unggulan kami', 'thi-glass' ),
+		'program_eyebrow'   => __( 'Program', 'thi-glass' ),
+		'program_title'     => __( 'Bidang kerja kami', 'thi-glass' ),
 		'program_category'  => 0,
 		'program_count'     => 6,
 
 		// Angka dampak.
 		'stats_enable'      => false,
-		'stats_title'       => __( 'Dampak dalam angka', 'thi-glass' ),
+		'stats_title'       => __( 'Capaian kami', 'thi-glass' ),
 
 		// Testimoni.
 		'testi_enable'      => false,
-		'testi_title'       => __( 'Kata mereka tentang kami', 'thi-glass' ),
+		'testi_title'       => __( 'Testimoni', 'thi-glass' ),
 		'testi_autoplay'    => false,
 
 		// Mitra.
 		'partner_enable'    => false,
-		'partner_title'     => __( 'Dipercaya oleh', 'thi-glass' ),
+		'partner_title'     => __( 'Mitra kami', 'thi-glass' ),
 
 		// Berita.
 		'news_enable'       => true,
-		'news_eyebrow'      => __( 'Kabar Terbaru', 'thi-glass' ),
-		'news_title'        => __( 'Berita & kegiatan', 'thi-glass' ),
+		'news_eyebrow'      => __( 'Publikasi', 'thi-glass' ),
+		'news_title'        => __( 'Berita dan kegiatan', 'thi-glass' ),
 		'news_category'     => 0,
 		'news_count'        => 3,
 
 		// CTA.
 		'cta_enable'        => true,
-		'cta_title'         => __( 'Mari berkolaborasi', 'thi-glass' ),
-		'cta_text'          => __( 'Punya gagasan program, ingin menjadi mitra, atau sekadar ingin berdiskusi? Tim kami siap mendengar.', 'thi-glass' ),
+		'cta_title'         => __( 'Hubungi kami', 'thi-glass' ),
+		'cta_text'          => __( 'Untuk kerja sama program, informasi kegiatan, atau pertanyaan lain, silakan hubungi kami melalui kontak di bawah ini.', 'thi-glass' ),
 		'cta_btn1_text'     => __( 'Hubungi Kami', 'thi-glass' ),
 		'cta_btn1_url'      => '#kontak',
 
@@ -230,7 +230,7 @@ function thig_assets() {
 	if ( thig_opt( 'load_google_fonts' ) ) {
 		wp_enqueue_style(
 			'thig-fonts',
-			'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap',
+			'https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap',
 			array(),
 			null
 		);

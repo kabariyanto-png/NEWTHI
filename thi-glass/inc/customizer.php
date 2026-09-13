@@ -57,9 +57,11 @@ function thig_customize_register( $wp_customize ) {
 		$wp_customize->add_setting(
 			'thig_' . $id,
 			array(
-				'default'           => array_key_exists( 'default', $args )
-					? $args['default']
-					: ( array_key_exists( $id, thig_defaults() ) ? thig_defaults()[ $id ] : '' ),
+				// thig_defaults() adalah sumber kebenaran; 'default' di sini hanya
+				// cadangan untuk kunci yang memang tidak terdaftar di sana.
+				'default'           => array_key_exists( $id, thig_defaults() )
+					? thig_defaults()[ $id ]
+					: ( array_key_exists( 'default', $args ) ? $args['default'] : '' ),
 				'sanitize_callback' => isset( $args['sanitize'] ) ? $args['sanitize'] : 'sanitize_text_field',
 				'transport'         => isset( $args['transport'] ) ? $args['transport'] : 'refresh',
 			)
@@ -116,7 +118,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'       => __( 'Warna Primer', 'thi-glass' ),
 			'section'     => 'thig_sec_brand',
 			'control'     => 'color',
-			'default'     => '#7C3AED',
+			'default'     => '#1E5B3F',
 			'sanitize'    => 'sanitize_hex_color',
 			'description' => __( 'Dipakai untuk tombol utama, tautan, dan aksen navigasi.', 'thi-glass' ),
 		)
@@ -127,7 +129,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'    => __( 'Warna Sekunder', 'thi-glass' ),
 			'section'  => 'thig_sec_brand',
 			'control'  => 'color',
-			'default'  => '#A78BFA',
+			'default'  => '#4E8C6A',
 			'sanitize' => 'sanitize_hex_color',
 		)
 	);
@@ -137,7 +139,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'       => __( 'Warna Aksen / CTA', 'thi-glass' ),
 			'section'     => 'thig_sec_brand',
 			'control'     => 'color',
-			'default'     => '#A16207',
+			'default'     => '#7A4E2D',
 			'sanitize'    => 'sanitize_hex_color',
 			'description' => __( 'Warna teks di atasnya dipilih otomatis (putih/gelap) agar kontras memenuhi WCAG.', 'thi-glass' ),
 		)
@@ -158,7 +160,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'       => __( 'Intensitas Blur (px)', 'thi-glass' ),
 			'section'     => 'thig_sec_glass',
 			'type'        => 'range',
-			'default'     => 18,
+			'default'     => 12,
 			'sanitize'    => 'thig_sanitize_range',
 			'input_attrs' => array(
 				'min'  => 0,
@@ -173,7 +175,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'       => __( 'Opasitas Panel Kaca (%)', 'thi-glass' ),
 			'section'     => 'thig_sec_glass',
 			'type'        => 'range',
-			'default'     => 55,
+			'default'     => 78,
 			'sanitize'    => 'thig_sanitize_range',
 			'input_attrs' => array(
 				'min'  => 30,
@@ -189,7 +191,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'       => __( 'Kelengkungan Sudut (px)', 'thi-glass' ),
 			'section'     => 'thig_sec_glass',
 			'type'        => 'range',
-			'default'     => 24,
+			'default'     => 8,
 			'sanitize'    => 'thig_sanitize_range',
 			'input_attrs' => array(
 				'min'  => 0,
@@ -201,7 +203,7 @@ function thig_customize_register( $wp_customize ) {
 	$add(
 		'load_google_fonts',
 		array(
-			'label'       => __( 'Muat Google Fonts (Plus Jakarta Sans + Inter)', 'thi-glass' ),
+			'label'       => __( 'Muat Google Fonts (Lora + Inter)', 'thi-glass' ),
 			'section'     => 'thig_sec_glass',
 			'type'        => 'checkbox',
 			'default'     => true,

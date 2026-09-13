@@ -45,9 +45,9 @@ function thig_contrast_ink( $bg ) {
  * @return string
  */
 function thig_dynamic_css() {
-	$primary   = thig_opt( 'color_primary', '#7C3AED' );
-	$secondary = thig_opt( 'color_secondary', '#A78BFA' );
-	$accent    = thig_opt( 'color_accent', '#A16207' );
+	$primary   = thig_opt( 'color_primary', '#1E5B3F' );
+	$secondary = thig_opt( 'color_secondary', '#4E8C6A' );
+	$accent    = thig_opt( 'color_accent', '#7A4E2D' );
 
 	$blur    = (int) thig_opt( 'glass_blur' );
 	$opacity = (float) thig_opt( 'glass_opacity' ) / 100;
@@ -74,7 +74,7 @@ function thig_dynamic_css() {
 
 	// Mode gelap: kaca berbasis gelap, bukan putih transparan.
 	$css .= sprintf(
-		'[data-theme="dark"]{--glass-bg:rgba(28,20,60,%s);--glass-bg-strong:rgba(20,13,45,%s);}',
+		'[data-theme="dark"]{--glass-bg:rgba(24,32,26,%s);--glass-bg-strong:rgba(20,27,22,%s);}',
 		round( $opacity, 2 ),
 		round( min( $opacity + 0.27, 0.94 ), 2 )
 	);

@@ -27,7 +27,7 @@ $thig_autoplay = thig_opt( 'testi_autoplay' ) ? 'true' : 'false';
 <section class="section section--alt" id="testimoni">
 	<div class="wrap wrap--narrow">
 
-		<div class="sec-head sec-head--center" data-reveal>
+		<div class="sec-head" data-reveal>
 			<h2><?php echo esc_html( thig_opt( 'testi_title' ) ); ?></h2>
 		</div>
 

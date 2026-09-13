@@ -25,7 +25,7 @@ if ( ! $thig_query->have_posts() ) {
 <section class="section section--alt" id="program">
 	<div class="wrap">
 
-		<div class="sec-head sec-head--center" data-reveal>
+		<div class="sec-head" data-reveal>
 			<?php if ( thig_opt( 'program_eyebrow' ) ) : ?>
 				<p class="eyebrow"><?php echo esc_html( thig_opt( 'program_eyebrow' ) ); ?></p>
 			<?php endif; ?>

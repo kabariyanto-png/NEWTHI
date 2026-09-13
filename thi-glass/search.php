@@ -11,7 +11,7 @@ get_header();
 ?>
 
 <section class="page-hero">
-	<div class="hero__bg" aria-hidden="true"><div class="orb orb--1" data-parallax="0.16"></div></div>
+	<div class="hero__bg" aria-hidden="true"><div class="hero__grad"></div><div class="hero__rule" data-parallax="0.04"></div></div>
 	<div class="wrap">
 		<div class="page-hero__content">
 			<?php thig_the_breadcrumbs(); ?>

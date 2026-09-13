@@ -1,7 +1,8 @@
 # THI Glass — Theme WordPress
 
-Theme klasik (tanpa page builder, tanpa proses build) dengan desain glassmorphism,
-parallax multi-lapis, mode gelap, dan panel Customizer lengkap.
+Theme klasik (tanpa page builder, tanpa proses build) bergaya lembaga: tipografi
+serif, palet hijau–coklat, panel kaca tipis, parallax halus, mode gelap, dan panel
+Customizer lengkap.
 
 ## Ringkas
 
@@ -9,7 +10,7 @@ parallax multi-lapis, mode gelap, dan panel Customizer lengkap.
 |---|---|
 | Tipe | Classic theme (PHP), bukan block theme |
 | Dependensi | **Nol.** Tanpa jQuery, tanpa GSAP, tanpa npm |
-| Berat aset | ±34 KB CSS + ±17 KB JS (sebelum kompresi server) |
+| Berat aset | ±46 KB CSS + ±21 KB JS (±11 KB CSS setelah gzip) |
 | Minimum | WordPress 6.0, PHP 7.4 |
 | Bahasa | Antarmuka Bahasa Indonesia, siap diterjemahkan (text domain `thi-glass`) |
 
@@ -43,10 +44,11 @@ Hanya lapisan dekoratif (orb gradien, grid, gambar latar) yang bergerak; teks da
 kontrol tidak pernah diparalaks. Pergeseran dibatasi maksimal 24% agar lapisan tidak
 pernah keluar wadahnya, dan `will-change` dilepas begitu elemen keluar viewport.
 
-**Glassmorphism** — `backdrop-filter: blur() saturate()` dengan border tipis dan
-highlight `inset`. Ada blok `@supports not (backdrop-filter)` yang menaikkan opasitas
-panel, sehingga di browser tanpa dukungan blur teks tetap terbaca, bukan menempel di
-latar ramai.
+**Glassmorphism** — dipakai terukur, bukan sebagai hiasan: bilah header, laci
+navigasi, dan panel kartu. `backdrop-filter: blur() saturate()` dengan opasitas 78%
+sehingga terbaca seperti kertas kalkir, bukan neon. Ada blok
+`@supports not (backdrop-filter)` yang menaikkan opasitas panel agar teks tetap
+terbaca di browser tanpa dukungan blur.
 
 **Aksesibilitas** — seluruh gerakan dimatikan oleh `prefers-reduced-motion: reduce`
 (parallax, reveal, marquee, autoplay slider, smooth scroll). Fokus terlihat 3px,
@@ -68,7 +70,28 @@ Semua lewat **Tampilan → Sesuaikan**:
 
 Menu: **Tampilan → Menu**, tiga lokasi tersedia (Utama, Footer, Legal).
 
-## Catatan
+## Arah desain
 
-Warna bawaan (ungu + emas) adalah placeholder dari sistem desain, **bukan** warna
-merek THI. Ganti di Customizer setelah theme aktif.
+Disusun agar terbaca sebagai situs lembaga, bukan halaman promosi:
+
+- **Judul serif** (Lora) dengan isi sans (Inter) — kombinasi lazim untuk lembaga.
+- **Rata kiri** di seluruh judul bagian dan hero; tidak ada blok rata tengah.
+- **Sudut siku** (4–12px). Bentuk pil hanya untuk titik indikator.
+- **Tanpa teks bergradien, tanpa orb blur, tanpa header pil melayang** — tiga ciri
+  yang membuat sebuah halaman terlihat seperti templat generator.
+- Gerakan ditahan: parallax hanya pada gambar hero dan garis latar, pergeseran
+  dibatasi, hover mengangkat 3px.
+
+## Warna
+
+| Peran | Hex | Rasio kontras |
+|---|---|---|
+| Primer (hijau) | `#1E5B3F` | 8,00:1 dengan teks putih |
+| Sekunder | `#4E8C6A` | — |
+| Aksen (coklat) | `#7A4E2D` | 7,11:1 dengan teks putih |
+| Latar | `#FAF8F3` | — |
+| Teks | `#1C2B22` | 13,95:1 dengan latar |
+
+Seluruh pasangan warna theme diuji terhadap WCAG AA; nilai terendah 5,22:1.
+Ganti hijau dan coklat di **Customizer → THI Glass — Tampilan → Warna Merek**
+bila THI punya kode warna resmi yang berbeda.

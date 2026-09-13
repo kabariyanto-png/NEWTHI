@@ -15,8 +15,8 @@ while ( have_posts() ) :
 
 	<section class="page-hero">
 		<div class="hero__bg" aria-hidden="true">
-			<div class="orb orb--1" data-parallax="0.16"></div>
-			<div class="orb orb--2" data-parallax="-0.12"></div>
+			<div class="hero__grad"></div>
+			<div class="hero__rule" data-parallax="0.04"></div>
 		</div>
 		<div class="wrap">
 			<div class="page-hero__content">
