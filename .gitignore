@@ -1,2 +1,5 @@
 __pycache__/
 *.py[cod]
+
+# Paket theme hasil build (dibuat ulang lewat thi-glass/build.sh)
+thi-glass.zip

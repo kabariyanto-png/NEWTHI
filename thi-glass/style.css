@@ -1,0 +1,20 @@
+/*
+Theme Name: THI Glass
+Theme URI: https://www.thi.or.id/
+Author: THI Digital
+Author URI: https://www.thi.or.id/
+Description: Theme WordPress premium untuk organisasi — desain glassmorphism dengan efek parallax multi-layer, mode gelap otomatis, aksesibilitas WCAG 2.1 AA, dan panel Customizer lengkap. Tanpa page builder, tanpa dependensi eksternal, ringan dan cepat.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: thi-glass
+Tags: organization, non-profit, glassmorphism, parallax, dark-mode, accessibility-ready, custom-colors, custom-logo, custom-menu, featured-images, translation-ready, block-styles, wide-blocks, threaded-comments, right-sidebar
+*/
+
+/*
+ * Semua style utama dimuat dari assets/css/theme.css.
+ * File ini hanya menyimpan header theme (wajib ada di WordPress).
+ */
