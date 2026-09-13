@@ -16,7 +16,7 @@ $thig_id = 'search-' . wp_unique_id();
 			value="<?php echo esc_attr( get_search_query() ); ?>"
 			placeholder="<?php esc_attr_e( 'Cari artikel…', 'thi-glass' ); ?>">
 	</label>
-	<button type="submit" class="icon-btn" style="background:var(--c-primary);color:var(--c-primary-ink)">
+	<button type="submit" class="icon-btn icon-btn--solid">
 		<span class="screen-reader-text"><?php esc_html_e( 'Cari', 'thi-glass' ); ?></span>
 		<?php echo thig_icon( 'search', 20 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</button>

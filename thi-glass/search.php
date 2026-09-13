@@ -35,7 +35,7 @@ get_header();
 				);
 				?>
 			</p>
-			<div style="max-width:460px;margin-top:1.5rem"><?php get_search_form(); ?></div>
+			<div class="hero__search"><?php get_search_form(); ?></div>
 		</div>
 	</div>
 </section>

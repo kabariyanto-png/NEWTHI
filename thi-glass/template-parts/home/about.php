@@ -59,7 +59,7 @@ $thig_img = thig_opt( 'about_image', '' );
 						loading="lazy" decoding="async" data-parallax="0.07">
 					<?php if ( thig_opt( 'hero_stat1_num', '' ) ) : ?>
 						<div class="glass float-card">
-							<span class="stat__num" style="font-size:var(--fs-xl)"><?php echo esc_html( thig_opt( 'hero_stat1_num', '' ) . thig_opt( 'hero_stat1_suffix', '' ) ); ?></span>
+							<span class="stat__num stat__num--sm"><?php echo esc_html( thig_opt( 'hero_stat1_num', '' ) . thig_opt( 'hero_stat1_suffix', '' ) ); ?></span>
 							<span class="stat__label"><?php echo esc_html( thig_opt( 'hero_stat1_label', '' ) ); ?></span>
 						</div>
 					<?php endif; ?>

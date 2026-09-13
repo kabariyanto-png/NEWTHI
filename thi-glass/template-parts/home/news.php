@@ -27,7 +27,7 @@ $thig_blog_url = get_permalink( get_option( 'page_for_posts' ) );
 <section class="section section--ambient" id="berita">
 	<div class="wrap">
 
-		<div class="sec-head" style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:flex-end;max-width:none" data-reveal>
+		<div class="sec-head sec-head--row" data-reveal>
 			<div>
 				<?php if ( thig_opt( 'news_eyebrow' ) ) : ?>
 					<p class="eyebrow"><?php echo esc_html( thig_opt( 'news_eyebrow' ) ); ?></p>

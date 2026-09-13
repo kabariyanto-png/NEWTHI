@@ -11,9 +11,9 @@ if ( ! thig_opt( 'cta_title' ) ) {
 	return;
 }
 ?>
-<section class="section">
+<section class="cta-band" data-reveal="fade">
 	<div class="wrap">
-		<div class="cta-band" data-reveal="zoom">
+		<div>
 			<h2><?php echo esc_html( thig_opt( 'cta_title' ) ); ?></h2>
 
 			<?php if ( thig_opt( 'cta_text' ) ) : ?>

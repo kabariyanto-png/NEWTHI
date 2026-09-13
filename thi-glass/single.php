@@ -67,7 +67,7 @@ while ( have_posts() ) :
 							<?php endif; ?>
 
 							<div class="share-row">
-								<span class="muted" style="font-size:var(--fs-xs)"><?php esc_html_e( 'Bagikan:', 'thi-glass' ); ?></span>
+								<span class="share-row__label"><?php esc_html_e( 'Bagikan:', 'thi-glass' ); ?></span>
 								<?php
 								$thig_url   = rawurlencode( get_permalink() );
 								$thig_title = rawurlencode( get_the_title() );

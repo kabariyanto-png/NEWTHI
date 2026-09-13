@@ -56,6 +56,9 @@
   --r-sm:4px; --r-md:6px; --r-lg:8px; --r-xl:12px; --r-pill:999px;
   --wrap:1160px; --wrap-narrow:720px; --gutter:clamp(1rem,4vw,2.5rem);
   --header-h:72px;
+  /* Satu nilai ritme vertikal untuk seluruh bagian halaman. */
+  --section-y:clamp(3.25rem,6vw,5rem);
+  --measure:62ch;
 
   /* Gerak */
   --e-out:cubic-bezier(.22,.8,.3,1);
@@ -140,21 +143,25 @@ hr{border:0;height:1px;background:var(--c-border);margin:var(--sp-6) 0}
 /* Layout helpers */
 .wrap{width:min(100% - (var(--gutter) * 2),var(--wrap));margin-inline:auto}
 .wrap--narrow{max-width:var(--wrap-narrow)}
-.section{position:relative;padding-block:var(--sp-8)}
-.section--tight{padding-block:var(--sp-7)}
+.section{position:relative;padding-block:var(--section-y)}
+.section--tight{padding-block:calc(var(--section-y) * .6)}
 .section--alt{background:var(--c-bg-alt)}
 .stack>*+*{margin-top:var(--sp-3)}
 .grid{display:grid;gap:var(--sp-4)}
-@media (min-width:640px){.grid--2{grid-template-columns:repeat(2,1fr)}}
-@media (min-width:900px){
-  .grid--3{grid-template-columns:repeat(3,1fr)}
-  .grid--4{grid-template-columns:repeat(4,1fr)}
-}
-@media (min-width:640px) and (max-width:899px){.grid--4{grid-template-columns:repeat(2,1fr)}}
+/* auto-fit: track kosong runtuh, jadi 2 kartu mengisi baris penuh
+   alih-alih menyisakan lubang di kolom ketiga. */
+.grid--2{grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr))}
+.grid--3{grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
+.grid--4{grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
 
 /* Section heading */
-.sec-head{max-width:var(--wrap-narrow);margin-bottom:var(--sp-6)}
-.sec-head--center{margin-inline:auto;text-align:center}
+.sec-head{max-width:var(--measure);margin-bottom:var(--sp-5)}
+/* Varian: judul di kiri, tautan pendukung di kanan, dasar sejajar. */
+.sec-head--row{
+  max-width:none;display:flex;flex-wrap:wrap;gap:var(--sp-3) var(--sp-5);
+  align-items:baseline;justify-content:space-between;
+}
+.sec-head--row>div{max-width:var(--measure)}
 .eyebrow{
   display:block;font-family:var(--font-body);
   font-size:var(--fs-xs);font-weight:600;letter-spacing:var(--tracking-wide);
@@ -383,7 +390,7 @@ a.chip:hover{background:var(--c-primary);color:var(--c-primary-ink);border-color
    tanpa teks gradien, tanpa lencana melayang. */
 .hero{
   position:relative;isolation:isolate;overflow:hidden;
-  padding-block:var(--sp-7) var(--sp-8);
+  padding-block:calc(var(--header-h) + var(--section-y)) var(--section-y);
   border-bottom:1px solid var(--c-border);
   background:var(--c-bg-alt);
 }
@@ -524,9 +531,13 @@ a.chip:hover{background:var(--c-primary);color:var(--c-primary-ink);border-color
 .feature-post__body{display:flex;flex-direction:column;gap:var(--sp-3);justify-content:center;padding:var(--sp-6)}
 
 /* Stat band */
-.stat-band{display:grid;gap:var(--sp-4);padding:var(--sp-6);grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
-.stat-band .stat{text-align:center}
-.stat-band .stat__num{font-size:var(--fs-3xl)}
+/* Perlakuan angka SAMA dengan deret di hero: baris bergaris, bukan kotak.
+   Dua gaya berbeda untuk konten sejenis membuat halaman terbaca acak. */
+.stat-band{
+  display:flex;flex-wrap:wrap;gap:var(--sp-5) var(--sp-7);
+  padding-top:var(--sp-5);border-top:1px solid var(--c-border);
+}
+.stat-band .stat{flex:1 1 11rem;min-width:11rem;max-width:18rem}
 
 /* Split (about) */
 .split{display:grid;gap:var(--sp-6);align-items:center}
@@ -540,8 +551,8 @@ a.chip:hover{background:var(--c-primary);color:var(--c-primary-ink);border-color
 .split__media{position:relative}
 .split__media img{border-radius:var(--r-xl);box-shadow:var(--glass-shadow-lg);width:100%}
 .split__media .float-card{
-  position:absolute;inset-block-end:-1.25rem;inset-inline-end:-1rem;
-  max-width:260px;padding:var(--sp-3) var(--sp-4);
+  position:absolute;inset-block-end:1rem;inset-inline-start:1rem;
+  max-width:15rem;padding:var(--sp-3) var(--sp-4);
 }
 @media (max-width:520px){.split__media .float-card{position:static;margin-top:var(--sp-3);max-width:none}}
 .check-list{display:grid;gap:.8rem;margin-top:var(--sp-4)}
@@ -550,7 +561,8 @@ a.chip:hover{background:var(--c-primary);color:var(--c-primary-ink);border-color
 
 /* Testimonials */
 .tslider{position:relative}
-.tslider__track{overflow:hidden;border-radius:var(--r-xl)}
+.tslider{max-width:46rem}
+.tslider__track{overflow:hidden;border-radius:var(--r-lg)}
 .tslider__list{display:flex;transition:transform var(--t-slow) var(--e-out)}
 .tslide{flex:0 0 100%;min-width:0;padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-4)}
 .tslide blockquote{font-family:var(--font-head);font-size:var(--fs-xl);line-height:1.45;font-weight:500;letter-spacing:-.015em}
@@ -583,9 +595,11 @@ a.chip:hover{background:var(--c-primary);color:var(--c-primary-ink);border-color
 @keyframes marquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(calc(-50% - (var(--gap) / 2)),0,0)}}
 
 /* CTA band */
+/* Pita melebar penuh; isinya memakai .wrap sehingga judulnya jatuh
+   persis di tepi kiri yang sama dengan seluruh halaman. */
 .cta-band{
   position:relative;overflow:hidden;
-  padding:clamp(2.25rem,5vw,3.5rem);border-radius:var(--r-lg);
+  padding-block:var(--section-y);
   color:#fff;background:#1E5B3F;background:var(--c-primary);
 }
 [data-theme="dark"] .cta-band{color:var(--c-primary-ink)}
@@ -820,6 +834,27 @@ input[type=submit]:hover,button[type=submit]:hover{transform:translateY(-2px);fi
 .to-top.is-visible{opacity:1;visibility:visible;transform:translateY(0)}
 .to-top:hover{background:var(--c-primary);color:var(--c-primary-ink);border-color:transparent}
 .to-top svg{width:20px;height:20px}
+
+/* ---------- Kelas pendukung tata letak -------------------------------- */
+.eyebrow--block{margin-bottom:var(--sp-4)}
+.hero--centered{text-align:center}
+.hero--centered .hero__content{margin-inline:auto}
+.hero--centered .hero__cta{justify-content:center}
+.hero__search{max-width:28rem;margin-block:var(--sp-4)}
+.hero--centered .hero__search,.text-center .hero__search{margin-inline:auto}
+.mcard__title{font-size:var(--fs-lg)}
+.stat__num--sm{font-size:var(--fs-xl)}
+.share-row__label{font-size:var(--fs-xs)}
+.icon-btn--solid{background:var(--c-primary);color:var(--c-primary-ink)}
+.icon-btn--solid:hover{background:color-mix(in oklab,var(--c-primary) 84%,#000);color:var(--c-primary-ink)}
+.contact-line{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
+.contact-line__icon{
+  display:grid;place-items:center;width:32px;height:32px;flex:none;
+  border-radius:var(--r-sm);background:color-mix(in oklab,var(--c-primary) 9%,transparent);
+  color:var(--c-primary);
+}
+.contact-line__icon svg{width:16px;height:16px}
+.contact-line a,.contact-line span:last-child{font-size:var(--fs-sm);color:var(--c-muted-fg)}
 
 /* ---------- 10. SCROLL REVEAL & MOTION ---------------------------------- */
 /* Bawaannya konten TERLIHAT. Status tersembunyi hanya dipasang bila JS aktif

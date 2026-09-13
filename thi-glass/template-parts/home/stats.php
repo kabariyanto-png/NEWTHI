@@ -23,7 +23,7 @@ if ( ! $thig_items ) {
 	return;
 }
 ?>
-<section class="section section--tight section--ambient" id="dampak">
+<section class="section section--ambient" id="dampak">
 	<div class="wrap">
 		<?php if ( thig_opt( 'stats_title' ) ) : ?>
 			<div class="sec-head" data-reveal>
@@ -31,7 +31,7 @@ if ( ! $thig_items ) {
 			</div>
 		<?php endif; ?>
 
-		<div class="glass stat-band" data-reveal="zoom">
+		<div class="stat-band" data-reveal="fade">
 			<?php foreach ( $thig_items as $item ) : ?>
 				<div class="stat">
 					<span class="stat__num"

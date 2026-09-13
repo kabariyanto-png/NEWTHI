@@ -81,22 +81,22 @@ $thig_credit  = thig_opt( 'footer_credit', '' );
 				<h2 class="widget-title"><?php esc_html_e( 'Hubungi Kami', 'thi-glass' ); ?></h2>
 				<ul>
 					<?php if ( $thig_address || $thig_city ) : ?>
-						<li class="info-tile" style="padding:0;gap:.6rem;margin-bottom:.5rem">
-							<span class="info-tile__icon" style="width:34px;height:34px;border-radius:10px"><?php echo thig_icon( 'map-pin', 17 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<li class="contact-line">
+							<span class="contact-line__icon"><?php echo thig_icon( 'map-pin', 17 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 							<span><?php echo nl2br( esc_html( trim( $thig_address . "\n" . $thig_city ) ) ); ?></span>
 						</li>
 					<?php endif; ?>
 
 					<?php if ( $thig_phone ) : ?>
-						<li class="info-tile" style="padding:0;gap:.6rem;margin-bottom:.5rem">
-							<span class="info-tile__icon" style="width:34px;height:34px;border-radius:10px"><?php echo thig_icon( 'phone', 17 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<li class="contact-line">
+							<span class="contact-line__icon"><?php echo thig_icon( 'phone', 17 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 							<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $thig_phone ) ); ?>"><?php echo esc_html( $thig_phone ); ?></a>
 						</li>
 					<?php endif; ?>
 
 					<?php if ( $thig_email ) : ?>
-						<li class="info-tile" style="padding:0;gap:.6rem">
-							<span class="info-tile__icon" style="width:34px;height:34px;border-radius:10px"><?php echo thig_icon( 'mail', 17 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<li class="contact-line">
+							<span class="contact-line__icon"><?php echo thig_icon( 'mail', 17 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 							<a href="mailto:<?php echo esc_attr( $thig_email ); ?>"><?php echo esc_html( $thig_email ); ?></a>
 						</li>
 					<?php endif; ?>

@@ -24,9 +24,7 @@ if ( ! $thig_logos ) {
 <section class="section section--tight" id="mitra">
 	<div class="wrap">
 		<?php if ( thig_opt( 'partner_title' ) ) : ?>
-			<p class="eyebrow" style="display:flex;justify-content:center;margin-bottom:2rem">
-				<?php echo esc_html( thig_opt( 'partner_title' ) ); ?>
-			</p>
+			<p class="eyebrow eyebrow--block"><?php echo esc_html( thig_opt( 'partner_title' ) ); ?></p>
 		<?php endif; ?>
 
 		<div class="marquee" data-reveal="fade">

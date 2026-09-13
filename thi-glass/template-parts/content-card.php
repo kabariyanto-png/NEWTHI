@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 			<?php endif; ?>
 		</div>
 
-		<h2 style="font-size:var(--fs-lg)"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+		<h2 class="mcard__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 		<p class="mcard__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 20, '…' ) ); ?></p>
 
 		<a class="link-arrow" href="<?php the_permalink(); ?>">
