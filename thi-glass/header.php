@@ -122,4 +122,24 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 </aside>
 
+<?php
+$thig_info = thig_opt( 'infobar_text', '' );
+if ( $thig_info ) :
+	?>
+	<div class="infobar">
+		<?php if ( thig_opt( 'infobar_label' ) ) : ?>
+			<span class="infobar__label"><?php echo esc_html( thig_opt( 'infobar_label' ) ); ?></span>
+		<?php endif; ?>
+		<div class="infobar__viewport">
+			<div class="infobar__track">
+				<span><?php echo esc_html( $thig_info ); ?></span>
+				<span aria-hidden="true"><?php echo esc_html( $thig_info ); ?></span>
+			</div>
+		</div>
+		<span class="infobar__date"><?php echo esc_html( wp_date( 'l, j M Y' ) ); ?></span>
+	</div>
+	<?php
+endif;
+?>
+
 <main id="main" class="site-main">

@@ -17,8 +17,17 @@ get_template_part( 'template-parts/home/hero' );
 if ( thig_opt( 'about_enable' ) ) {
 	get_template_part( 'template-parts/home/about' );
 }
+if ( thig_opt( 'sambutan_enable' ) ) {
+	get_template_part( 'template-parts/home/sambutan' );
+}
 if ( thig_opt( 'program_enable' ) ) {
 	get_template_part( 'template-parts/home/programs' );
+}
+if ( thig_opt( 'cols_enable' ) ) {
+	get_template_part( 'template-parts/home/columns' );
+}
+if ( thig_opt( 'agenda_enable' ) ) {
+	get_template_part( 'template-parts/home/agenda' );
 }
 if ( thig_opt( 'stats_enable' ) ) {
 	get_template_part( 'template-parts/home/stats' );
@@ -31,6 +40,9 @@ if ( thig_opt( 'partner_enable' ) ) {
 }
 if ( thig_opt( 'news_enable' ) ) {
 	get_template_part( 'template-parts/home/news' );
+}
+if ( thig_opt( 'quote_enable' ) ) {
+	get_template_part( 'template-parts/home/quote' );
 }
 
 // Konten halaman statis (bila ada isinya).

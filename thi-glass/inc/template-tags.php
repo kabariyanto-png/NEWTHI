@@ -223,7 +223,7 @@ function thig_the_card_thumb( $size = 'thig-card' ) {
 		return;
 	}
 	printf(
-		'<div class="mcard__fallback" aria-hidden="true" style="width:100%%;height:100%%;background:linear-gradient(135deg,var(--c-primary),var(--c-accent));opacity:.85"></div>'
+		'<div class="mcard__fallback" aria-hidden="true" style="width:100%%;height:100%%;background:linear-gradient(160deg,var(--c-primary),color-mix(in oklab,var(--c-primary) 55%%,#000));opacity:.9"></div>'
 	);
 }
 

@@ -45,9 +45,9 @@ function thig_contrast_ink( $bg ) {
  * @return string
  */
 function thig_dynamic_css() {
-	$primary   = thig_opt( 'color_primary', '#1E5B3F' );
-	$secondary = thig_opt( 'color_secondary', '#4E8C6A' );
-	$accent    = thig_opt( 'color_accent', '#7A4E2D' );
+	$primary   = thig_opt( 'color_primary', '#0E5C2F' );
+	$secondary = thig_opt( 'color_secondary', '#3E8E5A' );
+	$accent    = thig_opt( 'color_accent', '#F2C94C' );
 
 	$blur    = (int) thig_opt( 'glass_blur' );
 	$opacity = (float) thig_opt( 'glass_opacity' ) / 100;

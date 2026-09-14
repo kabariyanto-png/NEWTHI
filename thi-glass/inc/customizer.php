@@ -118,7 +118,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'       => __( 'Warna Primer', 'thi-glass' ),
 			'section'     => 'thig_sec_brand',
 			'control'     => 'color',
-			'default'     => '#1E5B3F',
+			'default'     => '#0E5C2F',
 			'sanitize'    => 'sanitize_hex_color',
 			'description' => __( 'Dipakai untuk tombol utama, tautan, dan aksen navigasi.', 'thi-glass' ),
 		)
@@ -129,7 +129,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'    => __( 'Warna Sekunder', 'thi-glass' ),
 			'section'  => 'thig_sec_brand',
 			'control'  => 'color',
-			'default'  => '#4E8C6A',
+			'default'  => '#3E8E5A',
 			'sanitize' => 'sanitize_hex_color',
 		)
 	);
@@ -139,7 +139,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'       => __( 'Warna Aksen / CTA', 'thi-glass' ),
 			'section'     => 'thig_sec_brand',
 			'control'     => 'color',
-			'default'     => '#7A4E2D',
+			'default'     => '#F2C94C',
 			'sanitize'    => 'sanitize_hex_color',
 			'description' => __( 'Warna teks di atasnya dipilih otomatis (putih/gelap) agar kontras memenuhi WCAG.', 'thi-glass' ),
 		)
@@ -744,6 +744,213 @@ function thig_customize_register( $wp_customize ) {
 				'min' => 2,
 				'max' => 9,
 			),
+		)
+	);
+
+	/* --- Pita info berjalan --- */
+	$wp_customize->add_section(
+		'thig_sec_infobar',
+		array(
+			'title'       => __( 'Pita Info Berjalan', 'thi-glass' ),
+			'panel'       => 'thig_panel_home',
+			'description' => __( 'Pita hijau di bawah header. Berhenti berjalan saat disorot kursor dan tidak bergerak sama sekali bagi pengunjung yang mengaktifkan "kurangi gerakan".', 'thi-glass' ),
+		)
+	);
+	$add(
+		'infobar_label',
+		array(
+			'label'   => __( 'Label', 'thi-glass' ),
+			'section' => 'thig_sec_infobar',
+		)
+	);
+	$add(
+		'infobar_text',
+		array(
+			'label'       => __( 'Teks Berjalan', 'thi-glass' ),
+			'section'     => 'thig_sec_infobar',
+			'type'        => 'textarea',
+			'description' => __( 'Kosongkan untuk menyembunyikan pita. Perbarui tiap kali informasinya berubah — pengumuman kedaluwarsa membuat situs terlihat terbengkalai.', 'thi-glass' ),
+		)
+	);
+
+	/* --- Sambutan pimpinan --- */
+	$wp_customize->add_section(
+		'thig_sec_sambutan',
+		array(
+			'title' => __( 'Sambutan Pimpinan', 'thi-glass' ),
+			'panel' => 'thig_panel_home',
+		)
+	);
+	$add(
+		'sambutan_enable',
+		array(
+			'label'    => __( 'Tampilkan bagian ini', 'thi-glass' ),
+			'section'  => 'thig_sec_sambutan',
+			'type'     => 'checkbox',
+			'sanitize' => 'thig_sanitize_checkbox',
+		)
+	);
+	$add( 'sambutan_label', array( 'label' => __( 'Label', 'thi-glass' ), 'section' => 'thig_sec_sambutan' ) );
+	$add( 'sambutan_title', array( 'label' => __( 'Judul', 'thi-glass' ), 'section' => 'thig_sec_sambutan' ) );
+	$add(
+		'sambutan_text',
+		array(
+			'label'    => __( 'Isi Sambutan', 'thi-glass' ),
+			'section'  => 'thig_sec_sambutan',
+			'type'     => 'textarea',
+			'sanitize' => 'wp_kses_post',
+		)
+	);
+	$add( 'sambutan_name', array( 'label' => __( 'Nama', 'thi-glass' ), 'section' => 'thig_sec_sambutan' ) );
+	$add( 'sambutan_role', array( 'label' => __( 'Jabatan', 'thi-glass' ), 'section' => 'thig_sec_sambutan' ) );
+	$add(
+		'sambutan_photo',
+		array(
+			'label'       => __( 'Foto', 'thi-glass' ),
+			'section'     => 'thig_sec_sambutan',
+			'control'     => 'image',
+			'sanitize'    => 'esc_url_raw',
+			'description' => __( 'Potret tegak, disarankan 800×1000.', 'thi-glass' ),
+		)
+	);
+	$add( 'sambutan_cta_text', array( 'label' => __( 'Tombol — Teks', 'thi-glass' ), 'section' => 'thig_sec_sambutan' ) );
+	$add(
+		'sambutan_cta_url',
+		array(
+			'label'    => __( 'Tombol — Tautan', 'thi-glass' ),
+			'section'  => 'thig_sec_sambutan',
+			'type'     => 'url',
+			'sanitize' => 'esc_url_raw',
+		)
+	);
+
+	/* --- Empat kolom kategori --- */
+	$wp_customize->add_section(
+		'thig_sec_cols',
+		array(
+			'title'       => __( 'Empat Kolom Kategori', 'thi-glass' ),
+			'panel'       => 'thig_panel_home',
+			'description' => __( 'Empat kolom berdampingan, masing-masing menarik pos dari satu kategori — misalnya Pengumuman, Blog Guru, Fasilitas, dan Kegiatan. Kolom yang kategorinya belum dipilih tidak ditampilkan.', 'thi-glass' ),
+		)
+	);
+	$add(
+		'cols_enable',
+		array(
+			'label'    => __( 'Tampilkan bagian ini', 'thi-glass' ),
+			'section'  => 'thig_sec_cols',
+			'type'     => 'checkbox',
+			'sanitize' => 'thig_sanitize_checkbox',
+		)
+	);
+	$add( 'cols_title', array( 'label' => __( 'Judul Bagian', 'thi-glass' ), 'section' => 'thig_sec_cols' ) );
+	$add(
+		'cols_count',
+		array(
+			'label'       => __( 'Pos per Kolom', 'thi-glass' ),
+			'section'     => 'thig_sec_cols',
+			'type'        => 'number',
+			'sanitize'    => 'absint',
+			'input_attrs' => array( 'min' => 2, 'max' => 6 ),
+			'description' => __( 'Pos pertama tampil besar dengan gambar; sisanya sebagai daftar ringkas.', 'thi-glass' ),
+		)
+	);
+	for ( $i = 1; $i <= 4; $i++ ) {
+		$add(
+			"col{$i}_category",
+			array(
+				/* translators: %d: nomor kolom. */
+				'label'    => sprintf( __( 'Kolom %d — Kategori', 'thi-glass' ), $i ),
+				'section'  => 'thig_sec_cols',
+				'type'     => 'select',
+				'choices'  => $cats,
+				'sanitize' => 'thig_sanitize_category',
+			)
+		);
+		$add(
+			"col{$i}_title",
+			array(
+				/* translators: %d: nomor kolom. */
+				'label'       => sprintf( __( 'Kolom %d — Judul', 'thi-glass' ), $i ),
+				'section'     => 'thig_sec_cols',
+				'description' => 1 === $i ? __( 'Kosongkan untuk memakai nama kategorinya.', 'thi-glass' ) : '',
+			)
+		);
+	}
+
+	/* --- Agenda --- */
+	$wp_customize->add_section(
+		'thig_sec_agenda',
+		array(
+			'title'       => __( 'Agenda Kegiatan', 'thi-glass' ),
+			'panel'       => 'thig_panel_home',
+			'description' => __( 'Menampilkan pos berjadwal di masa depan lebih dulu. Bila tidak ada, pos terbaru dari kategori itu yang tampil, sehingga bagian ini tidak pernah kosong melompong.', 'thi-glass' ),
+		)
+	);
+	$add(
+		'agenda_enable',
+		array(
+			'label'    => __( 'Tampilkan bagian ini', 'thi-glass' ),
+			'section'  => 'thig_sec_agenda',
+			'type'     => 'checkbox',
+			'sanitize' => 'thig_sanitize_checkbox',
+		)
+	);
+	$add( 'agenda_label', array( 'label' => __( 'Label', 'thi-glass' ), 'section' => 'thig_sec_agenda' ) );
+	$add( 'agenda_title', array( 'label' => __( 'Judul', 'thi-glass' ), 'section' => 'thig_sec_agenda' ) );
+	$add(
+		'agenda_category',
+		array(
+			'label'    => __( 'Kategori Agenda', 'thi-glass' ),
+			'section'  => 'thig_sec_agenda',
+			'type'     => 'select',
+			'choices'  => $cats,
+			'sanitize' => 'thig_sanitize_category',
+		)
+	);
+	$add(
+		'agenda_count',
+		array(
+			'label'       => __( 'Jumlah Agenda', 'thi-glass' ),
+			'section'     => 'thig_sec_agenda',
+			'type'        => 'number',
+			'sanitize'    => 'absint',
+			'input_attrs' => array( 'min' => 2, 'max' => 10 ),
+		)
+	);
+
+	/* --- Kutipan --- */
+	$wp_customize->add_section(
+		'thig_sec_quote',
+		array(
+			'title'       => __( 'Pita Kutipan', 'thi-glass' ),
+			'panel'       => 'thig_panel_home',
+			'description' => __( 'Pita hijau berisi ayat, hadis, atau motto lembaga.', 'thi-glass' ),
+		)
+	);
+	$add(
+		'quote_enable',
+		array(
+			'label'    => __( 'Tampilkan bagian ini', 'thi-glass' ),
+			'section'  => 'thig_sec_quote',
+			'type'     => 'checkbox',
+			'sanitize' => 'thig_sanitize_checkbox',
+		)
+	);
+	$add(
+		'quote_text',
+		array(
+			'label'    => __( 'Isi Kutipan', 'thi-glass' ),
+			'section'  => 'thig_sec_quote',
+			'type'     => 'textarea',
+			'sanitize' => 'wp_kses_post',
+		)
+	);
+	$add(
+		'quote_source',
+		array(
+			'label'       => __( 'Sumber', 'thi-glass' ),
+			'section'     => 'thig_sec_quote',
+			'description' => __( 'Misalnya: HR. Al-Bukhari', 'thi-glass' ),
 		)
 	);
 

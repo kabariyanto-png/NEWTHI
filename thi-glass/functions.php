@@ -60,17 +60,17 @@ function thig_setup() {
 			array(
 				'name'  => __( 'Primer', 'thi-glass' ),
 				'slug'  => 'thig-primary',
-				'color' => thig_opt( 'color_primary', '#1E5B3F' ),
+				'color' => thig_opt( 'color_primary', '#0E5C2F' ),
 			),
 			array(
 				'name'  => __( 'Sekunder', 'thi-glass' ),
 				'slug'  => 'thig-secondary',
-				'color' => thig_opt( 'color_secondary', '#4E8C6A' ),
+				'color' => thig_opt( 'color_secondary', '#3E8E5A' ),
 			),
 			array(
 				'name'  => __( 'Aksen', 'thi-glass' ),
 				'slug'  => 'thig-accent',
-				'color' => thig_opt( 'color_accent', '#7A4E2D' ),
+				'color' => thig_opt( 'color_accent', '#F2C94C' ),
 			),
 			array(
 				'name'  => __( 'Teks', 'thi-glass' ),
@@ -141,9 +141,9 @@ function thig_defaults() {
 
 	$defaults = array(
 		// Tampilan.
-		'color_primary'     => '#1E5B3F',
-		'color_secondary'   => '#4E8C6A',
-		'color_accent'      => '#7A4E2D',
+		'color_primary'     => '#0E5C2F',
+		'color_secondary'   => '#3E8E5A',
+		'color_accent'      => '#F2C94C',
 		'glass_blur'        => 12,
 		'glass_opacity'     => 78,
 		'radius'            => 8,
@@ -199,6 +199,33 @@ function thig_defaults() {
 		'cta_text'          => __( 'Untuk kerja sama program, informasi kegiatan, atau pertanyaan lain, silakan hubungi kami melalui kontak di bawah ini.', 'thi-glass' ),
 		'cta_btn1_text'     => __( 'Hubungi Kami', 'thi-glass' ),
 		'cta_btn1_url'      => '#kontak',
+
+		// Pita info berjalan.
+		'infobar_label'     => __( 'Info', 'thi-glass' ),
+
+		// Sambutan pimpinan.
+		'sambutan_enable'   => false,
+		'sambutan_label'    => __( 'Sambutan', 'thi-glass' ),
+		'sambutan_title'    => __( 'Sambutan Pimpinan', 'thi-glass' ),
+
+		// Empat kolom kategori.
+		'cols_enable'       => false,
+		'cols_title'        => __( 'Informasi terbaru', 'thi-glass' ),
+		'cols_count'        => 4,
+		'col1_category'     => 0,
+		'col2_category'     => 0,
+		'col3_category'     => 0,
+		'col4_category'     => 0,
+
+		// Agenda.
+		'agenda_enable'     => false,
+		'agenda_label'      => __( 'Agenda', 'thi-glass' ),
+		'agenda_title'      => __( 'Kegiatan mendatang', 'thi-glass' ),
+		'agenda_category'   => 0,
+		'agenda_count'      => 4,
+
+		// Kutipan.
+		'quote_enable'      => false,
 
 		// Kontak.
 		'contact_country'   => 'ID',
