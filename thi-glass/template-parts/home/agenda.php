@@ -10,22 +10,25 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$thig_cat = (int) thig_opt( 'agenda_category', 0 );
-if ( ! $thig_cat ) {
+$thig_type = thig_opt( 'agenda_post_type' );
+$thig_cat  = (int) thig_opt( 'agenda_category', 0 );
+
+// Pos biasa perlu kategori supaya tidak menarik seluruh isi situs;
+// custom post type sudah tersaring oleh post type-nya sendiri.
+if ( 'post' === $thig_type && ! $thig_cat ) {
 	return;
 }
 
-$thig_args = array(
-	'cat'                 => $thig_cat,
-	'posts_per_page'      => (int) thig_opt( 'agenda_count', 4 ),
-	'ignore_sticky_posts' => true,
-	'no_found_rows'       => true,
-	'post_status'         => array( 'publish', 'future' ),
-	'orderby'             => 'date',
-	'order'               => 'ASC',
-	'date_query'          => array(
-		array( 'after' => 'today' ),
-	),
+$thig_args = array_merge(
+	thig_section_query_args( $thig_type, $thig_cat, (int) thig_opt( 'agenda_count', 4 ) ),
+	array(
+		'post_status' => array( 'publish', 'future' ),
+		'orderby'     => 'date',
+		'order'       => 'ASC',
+		'date_query'  => array(
+			array( 'after' => 'today' ),
+		),
+	)
 );
 
 $thig_query = new WP_Query( $thig_args );

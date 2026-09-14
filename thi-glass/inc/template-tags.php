@@ -159,6 +159,35 @@ function thig_the_post_meta( $with_author = true ) {
 }
 
 /**
+ * Susun argumen WP_Query untuk satu bagian beranda.
+ *
+ * Kategori (`cat`) hanya berlaku untuk post type `post`; custom post type
+ * memakai taksonominya sendiri, sehingga menyertakan `cat` di sana justru
+ * membuat kuerinya tidak menghasilkan apa pun.
+ *
+ * @param string $post_type Nama post type.
+ * @param int    $cat       ID kategori (0 = semua).
+ * @param int    $count     Jumlah pos.
+ * @return array
+ */
+function thig_section_query_args( $post_type, $cat, $count ) {
+	$post_type = post_type_exists( $post_type ) ? $post_type : 'post';
+
+	$args = array(
+		'post_type'           => $post_type,
+		'posts_per_page'      => max( 1, (int) $count ),
+		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
+	);
+
+	if ( 'post' === $post_type && (int) $cat > 0 ) {
+		$args['cat'] = (int) $cat;
+	}
+
+	return $args;
+}
+
+/**
  * Estimasi waktu baca dalam menit (±200 kata/menit).
  *
  * @return int

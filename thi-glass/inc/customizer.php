@@ -32,6 +32,48 @@ function thig_sanitize_range( $value, $setting ) {
 }
 
 /**
+ * Daftar post type publik untuk dropdown Customizer.
+ *
+ * Situs sekolah biasanya menyimpan Pengumuman, Agenda, Fasilitas dan
+ * sejenisnya sebagai custom post type dari plugin pendamping, bukan sebagai
+ * kategori di dalam Pos. Daftar ini dibangun saat halaman dibuka sehingga
+ * post type apa pun yang terdaftar langsung bisa dipilih.
+ *
+ * @return array<string,string>
+ */
+function thig_post_type_choices() {
+	$choices = array( 'post' => __( 'Pos (bawaan)', 'thi-glass' ) );
+
+	$types = get_post_types(
+		array(
+			'public'  => true,
+			'show_ui' => true,
+		),
+		'objects'
+	);
+
+	foreach ( $types as $type ) {
+		if ( in_array( $type->name, array( 'post', 'page', 'attachment' ), true ) ) {
+			continue;
+		}
+		$choices[ $type->name ] = $type->labels->name . ' (' . $type->name . ')';
+	}
+
+	return $choices;
+}
+
+/**
+ * Sanitasi nama post type.
+ *
+ * @param mixed $value Nilai.
+ * @return string
+ */
+function thig_sanitize_post_type( $value ) {
+	$value = sanitize_key( $value );
+	return post_type_exists( $value ) ? $value : 'post';
+}
+
+/**
  * Sanitasi ID kategori (0 = semua).
  *
  * @param mixed $value Nilai.
@@ -479,10 +521,23 @@ function thig_customize_register( $wp_customize ) {
 		)
 	);
 
+	$types = thig_post_type_choices();
+
 	$cats = array( 0 => __( '— Semua kategori —', 'thi-glass' ) );
 	foreach ( get_categories( array( 'hide_empty' => false ) ) as $cat ) {
 		$cats[ $cat->term_id ] = $cat->name;
 	}
+	$add(
+		'program_post_type',
+		array(
+			'label'       => __( 'Sumber Konten', 'thi-glass' ),
+			'section'     => 'thig_sec_program',
+			'type'        => 'select',
+			'choices'     => $types,
+			'sanitize'    => 'thig_sanitize_post_type',
+			'description' => __( 'Pilih Pos bila memakai kategori biasa, atau pilih custom post type seperti Fasilitas atau Prestasi. Pilihan kategori di bawah hanya berlaku untuk Pos.', 'thi-glass' ),
+		)
+	);
 	$add(
 		'program_category',
 		array(
@@ -722,6 +777,17 @@ function thig_customize_register( $wp_customize ) {
 		)
 	);
 	$add(
+		'news_post_type',
+		array(
+			'label'       => __( 'Sumber Konten', 'thi-glass' ),
+			'section'     => 'thig_sec_news',
+			'type'        => 'select',
+			'choices'     => $types,
+			'sanitize'    => 'thig_sanitize_post_type',
+			'description' => __( 'Sama seperti di atas: Pos, atau custom post type mana pun yang terdaftar.', 'thi-glass' ),
+		)
+	);
+	$add(
 		'news_category',
 		array(
 			'label'    => __( 'Ambil dari Kategori', 'thi-glass' ),
@@ -830,7 +896,7 @@ function thig_customize_register( $wp_customize ) {
 		array(
 			'title'       => __( 'Empat Kolom Kategori', 'thi-glass' ),
 			'panel'       => 'thig_panel_home',
-			'description' => __( 'Empat kolom berdampingan, masing-masing menarik pos dari satu kategori — misalnya Pengumuman, Blog Guru, Fasilitas, dan Kegiatan. Kolom yang kategorinya belum dipilih tidak ditampilkan.', 'thi-glass' ),
+			'description' => __( 'Empat kolom berdampingan. Tiap kolom menarik dari satu post type — dan bila post type itu Pos, boleh dipersempit ke satu kategori. Kolom tanpa sumber tidak ditampilkan.', 'thi-glass' ),
 		)
 	);
 	$add(
@@ -855,6 +921,18 @@ function thig_customize_register( $wp_customize ) {
 		)
 	);
 	for ( $i = 1; $i <= 4; $i++ ) {
+		$add(
+			"col{$i}_post_type",
+			array(
+				/* translators: %d: nomor kolom. */
+				'label'       => sprintf( __( 'Kolom %d — Sumber Konten', 'thi-glass' ), $i ),
+				'section'     => 'thig_sec_cols',
+				'type'        => 'select',
+				'choices'     => $types,
+				'sanitize'    => 'thig_sanitize_post_type',
+				'description' => 1 === $i ? __( 'Pilih Pos, atau custom post type seperti Pengumuman, Fasilitas, Ekskul, Prestasi.', 'thi-glass' ) : '',
+			)
+		);
 		$add(
 			"col{$i}_category",
 			array(
@@ -897,6 +975,17 @@ function thig_customize_register( $wp_customize ) {
 	);
 	$add( 'agenda_label', array( 'label' => __( 'Label', 'thi-glass' ), 'section' => 'thig_sec_agenda' ) );
 	$add( 'agenda_title', array( 'label' => __( 'Judul', 'thi-glass' ), 'section' => 'thig_sec_agenda' ) );
+	$add(
+		'agenda_post_type',
+		array(
+			'label'       => __( 'Sumber Konten', 'thi-glass' ),
+			'section'     => 'thig_sec_agenda',
+			'type'        => 'select',
+			'choices'     => $types,
+			'sanitize'    => 'thig_sanitize_post_type',
+			'description' => __( 'Untuk situs sekolah biasanya post type Agenda, bukan kategori Pos.', 'thi-glass' ),
+		)
+	);
 	$add(
 		'agenda_category',
 		array(

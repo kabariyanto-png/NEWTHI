@@ -170,6 +170,7 @@ function thig_defaults() {
 		'program_enable'    => true,
 		'program_eyebrow'   => __( 'Pendidikan', 'thi-glass' ),
 		'program_title'     => __( 'Yang kami kerjakan', 'thi-glass' ),
+		'program_post_type' => 'post',
 		'program_category'  => 0,
 		'program_count'     => 6,
 
@@ -190,6 +191,7 @@ function thig_defaults() {
 		'news_enable'       => true,
 		'news_eyebrow'      => __( 'Dokumentasi', 'thi-glass' ),
 		'news_title'        => __( 'Kabar dari pondok', 'thi-glass' ),
+		'news_post_type'    => 'post',
 		'news_category'     => 0,
 		'news_count'        => 3,
 
@@ -212,6 +214,10 @@ function thig_defaults() {
 		'cols_enable'       => false,
 		'cols_title'        => __( 'Informasi terbaru', 'thi-glass' ),
 		'cols_count'        => 4,
+		'col1_post_type'    => 'post',
+		'col2_post_type'    => 'post',
+		'col3_post_type'    => 'post',
+		'col4_post_type'    => 'post',
 		'col1_category'     => 0,
 		'col2_category'     => 0,
 		'col3_category'     => 0,
@@ -221,6 +227,7 @@ function thig_defaults() {
 		'agenda_enable'     => false,
 		'agenda_label'      => __( 'Agenda', 'thi-glass' ),
 		'agenda_title'      => __( 'Kegiatan mendatang', 'thi-glass' ),
+		'agenda_post_type'  => 'post',
 		'agenda_category'   => 0,
 		'agenda_count'      => 4,
 

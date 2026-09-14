@@ -7,17 +7,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$thig_args = array(
-	'posts_per_page'      => max( 2, (int) thig_opt( 'news_count' ) ),
-	'ignore_sticky_posts' => true,
-	'no_found_rows'       => true,
+$thig_query = new WP_Query(
+	thig_section_query_args(
+		thig_opt( 'news_post_type' ),
+		(int) thig_opt( 'news_category' ),
+		max( 2, (int) thig_opt( 'news_count' ) )
+	)
 );
-$thig_cat = (int) thig_opt( 'news_category' );
-if ( $thig_cat ) {
-	$thig_args['cat'] = $thig_cat;
-}
-
-$thig_query = new WP_Query( $thig_args );
 if ( ! $thig_query->have_posts() ) {
 	return;
 }

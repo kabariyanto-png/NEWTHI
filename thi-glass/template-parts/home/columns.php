@@ -10,9 +10,14 @@ defined( 'ABSPATH' ) || exit;
 
 $thig_cols = array();
 for ( $i = 1; $i <= 4; $i++ ) {
-	$cat = (int) thig_opt( "col{$i}_category", 0 );
-	if ( $cat ) {
+	$type = thig_opt( "col{$i}_post_type" );
+	$cat  = (int) thig_opt( "col{$i}_category", 0 );
+
+	// Kolom tampil bila sumbernya jelas: custom post type apa pun, atau
+	// Pos yang sudah dipersempit ke satu kategori.
+	if ( 'post' !== $type || $cat ) {
 		$thig_cols[] = array(
+			'type'  => $type,
 			'cat'   => $cat,
 			'title' => thig_opt( "col{$i}_title", '' ),
 		);
@@ -35,20 +40,26 @@ if ( ! $thig_cols ) {
 			<?php
 			foreach ( $thig_cols as $col ) :
 				$q = new WP_Query(
-					array(
-						'cat'                 => $col['cat'],
-						'posts_per_page'      => (int) thig_opt( 'cols_count', 4 ),
-						'ignore_sticky_posts' => true,
-						'no_found_rows'       => true,
-					)
+					thig_section_query_args( $col['type'], $col['cat'], (int) thig_opt( 'cols_count', 4 ) )
 				);
 				if ( ! $q->have_posts() ) {
 					wp_reset_postdata();
 					continue;
 				}
 
-				$term  = get_term( $col['cat'], 'category' );
-				$label = $col['title'] ? $col['title'] : ( $term && ! is_wp_error( $term ) ? $term->name : '' );
+				$term    = ( 'post' === $col['type'] && $col['cat'] ) ? get_term( $col['cat'], 'category' ) : null;
+				$archive = ( 'post' === $col['type'] )
+					? ( $term && ! is_wp_error( $term ) ? get_category_link( $term ) : '' )
+					: get_post_type_archive_link( $col['type'] );
+
+				if ( $col['title'] ) {
+					$label = $col['title'];
+				} elseif ( $term && ! is_wp_error( $term ) ) {
+					$label = $term->name;
+				} else {
+					$obj   = get_post_type_object( $col['type'] );
+					$label = $obj ? $obj->labels->name : '';
+				}
 				$first = true;
 				?>
 				<div class="colcat" data-reveal>
@@ -96,8 +107,8 @@ if ( ! $thig_cols ) {
 					?>
 					</ul>
 
-					<?php if ( $term && ! is_wp_error( $term ) ) : ?>
-						<a class="link-arrow" href="<?php echo esc_url( get_category_link( $term ) ); ?>">
+					<?php if ( $archive ) : ?>
+						<a class="link-arrow" href="<?php echo esc_url( $archive ); ?>">
 							<?php esc_html_e( 'Selengkapnya', 'thi-glass' ); ?>
 							<span class="screen-reader-text"><?php echo esc_html( $label ); ?></span>
 						</a>
