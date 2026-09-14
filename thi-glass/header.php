@@ -21,6 +21,26 @@ defined( 'ABSPATH' ) || exit;
 <a class="skip-link" href="#main"><?php esc_html_e( 'Lompat ke konten utama', 'thi-glass' ); ?></a>
 <div class="scroll-progress" aria-hidden="true"></div>
 
+<?php
+$thig_info = thig_opt( 'infobar_text', '' );
+if ( $thig_info ) :
+	?>
+	<div class="infobar">
+		<?php if ( thig_opt( 'infobar_label' ) ) : ?>
+			<span class="infobar__label"><?php echo esc_html( thig_opt( 'infobar_label' ) ); ?></span>
+		<?php endif; ?>
+		<div class="infobar__viewport">
+			<div class="infobar__track">
+				<span><?php echo esc_html( $thig_info ); ?></span>
+				<span aria-hidden="true"><?php echo esc_html( $thig_info ); ?></span>
+			</div>
+		</div>
+		<span class="infobar__date"><?php echo esc_html( wp_date( 'l, j M Y' ) ); ?></span>
+	</div>
+	<?php
+endif;
+?>
+
 <header class="site-header" id="site-header">
 	<div class="wrap">
 		<div class="header-inner">
@@ -121,25 +141,5 @@ defined( 'ABSPATH' ) || exit;
 		<?php thig_the_social_row(); ?>
 	</div>
 </aside>
-
-<?php
-$thig_info = thig_opt( 'infobar_text', '' );
-if ( $thig_info ) :
-	?>
-	<div class="infobar">
-		<?php if ( thig_opt( 'infobar_label' ) ) : ?>
-			<span class="infobar__label"><?php echo esc_html( thig_opt( 'infobar_label' ) ); ?></span>
-		<?php endif; ?>
-		<div class="infobar__viewport">
-			<div class="infobar__track">
-				<span><?php echo esc_html( $thig_info ); ?></span>
-				<span aria-hidden="true"><?php echo esc_html( $thig_info ); ?></span>
-			</div>
-		</div>
-		<span class="infobar__date"><?php echo esc_html( wp_date( 'l, j M Y' ) ); ?></span>
-	</div>
-	<?php
-endif;
-?>
 
 <main id="main" class="site-main">

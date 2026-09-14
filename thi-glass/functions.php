@@ -60,17 +60,17 @@ function thig_setup() {
 			array(
 				'name'  => __( 'Primer', 'thi-glass' ),
 				'slug'  => 'thig-primary',
-				'color' => thig_opt( 'color_primary', '#0E5C2F' ),
+				'color' => thig_opt( 'color_primary', '#126B38' ),
 			),
 			array(
 				'name'  => __( 'Sekunder', 'thi-glass' ),
 				'slug'  => 'thig-secondary',
-				'color' => thig_opt( 'color_secondary', '#3E8E5A' ),
+				'color' => thig_opt( 'color_secondary', '#3E9A63' ),
 			),
 			array(
 				'name'  => __( 'Aksen', 'thi-glass' ),
 				'slug'  => 'thig-accent',
-				'color' => thig_opt( 'color_accent', '#F2C94C' ),
+				'color' => thig_opt( 'color_accent', '#E4B94C' ),
 			),
 			array(
 				'name'  => __( 'Teks', 'thi-glass' ),
@@ -141,41 +141,41 @@ function thig_defaults() {
 
 	$defaults = array(
 		// Tampilan.
-		'color_primary'     => '#0E5C2F',
-		'color_secondary'   => '#3E8E5A',
-		'color_accent'      => '#F2C94C',
+		'color_primary'     => '#126B38',
+		'color_secondary'   => '#3E9A63',
+		'color_accent'      => '#E4B94C',
 		'glass_blur'        => 12,
 		'glass_opacity'     => 78,
 		'radius'            => 8,
 		'load_google_fonts' => true,
 
 		// Hero.
-		'hero_badge'        => __( 'Organisasi Nirlaba', 'thi-glass' ),
-		'hero_title'        => __( 'Bekerja bersama masyarakat untuk perubahan yang berkelanjutan', 'thi-glass' ),
-		'hero_title_accent' => __( 'berkelanjutan', 'thi-glass' ),
-		'hero_lead'         => __( 'Kami menjalankan program pendidikan, pemberdayaan ekonomi, dan penguatan kapasitas organisasi masyarakat di berbagai daerah di Indonesia.', 'thi-glass' ),
-		'hero_cta1_text'    => __( 'Program Kami', 'thi-glass' ),
+		'hero_badge'        => __( 'Palima · Serang · Banten', 'thi-glass' ),
+		'hero_title'        => __( 'Setiap hari di sini dimulai jauh sebelum matahari terbit.', 'thi-glass' ),
+		'hero_title_accent' => __( 'matahari terbit', 'thi-glass' ),
+		'hero_lead'         => __( 'Yayasan Pendidikan Islam Tunas Harapan Ilahi menyelenggarakan Pondok Modern Darul Ishlah — pendidikan menengah berasrama dengan kurikulum nasional dan kepesantrenan.', 'thi-glass' ),
+		'hero_cta1_text'    => __( 'Penerimaan Santri', 'thi-glass' ),
 		'hero_cta1_url'     => '#program',
-		'hero_cta2_text'    => __( 'Hubungi Kami', 'thi-glass' ),
+		'hero_cta2_text'    => __( 'Kehidupan Santri', 'thi-glass' ),
 		'hero_cta2_url'     => '#kontak',
 
 		// Tentang.
 		'about_enable'      => true,
 		'about_eyebrow'     => __( 'Profil', 'thi-glass' ),
-		'about_title'       => __( 'Tentang organisasi kami', 'thi-glass' ),
+		'about_title'       => __( 'Tentang yayasan', 'thi-glass' ),
 		'about_text'        => __( 'Sejak berdiri, kami mendampingi program pendidikan, pemberdayaan ekonomi, dan penguatan kapasitas organisasi masyarakat sipil di berbagai daerah.', 'thi-glass' ),
 		'about_cta_text'    => __( 'Selengkapnya', 'thi-glass' ),
 
 		// Program.
 		'program_enable'    => true,
-		'program_eyebrow'   => __( 'Program', 'thi-glass' ),
-		'program_title'     => __( 'Bidang kerja kami', 'thi-glass' ),
+		'program_eyebrow'   => __( 'Pendidikan', 'thi-glass' ),
+		'program_title'     => __( 'Yang kami kerjakan', 'thi-glass' ),
 		'program_category'  => 0,
 		'program_count'     => 6,
 
 		// Angka dampak.
 		'stats_enable'      => false,
-		'stats_title'       => __( 'Capaian kami', 'thi-glass' ),
+		'stats_title'       => __( 'Dalam angka', 'thi-glass' ),
 
 		// Testimoni.
 		'testi_enable'      => false,
@@ -188,15 +188,15 @@ function thig_defaults() {
 
 		// Berita.
 		'news_enable'       => true,
-		'news_eyebrow'      => __( 'Publikasi', 'thi-glass' ),
-		'news_title'        => __( 'Berita dan kegiatan', 'thi-glass' ),
+		'news_eyebrow'      => __( 'Dokumentasi', 'thi-glass' ),
+		'news_title'        => __( 'Kabar dari pondok', 'thi-glass' ),
 		'news_category'     => 0,
 		'news_count'        => 3,
 
 		// CTA.
 		'cta_enable'        => true,
-		'cta_title'         => __( 'Hubungi kami', 'thi-glass' ),
-		'cta_text'          => __( 'Untuk kerja sama program, informasi kegiatan, atau pertanyaan lain, silakan hubungi kami melalui kontak di bawah ini.', 'thi-glass' ),
+		'cta_title'         => __( 'Berkunjung atau bertanya?', 'thi-glass' ),
+		'cta_text'          => __( 'Wali santri dan calon santri dipersilakan datang melihat langsung. Hubungi kami untuk mengatur waktunya.', 'thi-glass' ),
 		'cta_btn1_text'     => __( 'Hubungi Kami', 'thi-glass' ),
 		'cta_btn1_url'      => '#kontak',
 
@@ -257,7 +257,7 @@ function thig_assets() {
 	if ( thig_opt( 'load_google_fonts' ) ) {
 		wp_enqueue_style(
 			'thig-fonts',
-			'https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap',
+			'https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:wght@400;500;600&display=swap',
 			array(),
 			null
 		);

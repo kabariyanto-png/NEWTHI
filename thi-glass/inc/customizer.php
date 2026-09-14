@@ -118,7 +118,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'       => __( 'Warna Primer', 'thi-glass' ),
 			'section'     => 'thig_sec_brand',
 			'control'     => 'color',
-			'default'     => '#0E5C2F',
+			'default'     => '#126B38',
 			'sanitize'    => 'sanitize_hex_color',
 			'description' => __( 'Dipakai untuk tombol utama, tautan, dan aksen navigasi.', 'thi-glass' ),
 		)
@@ -129,7 +129,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'    => __( 'Warna Sekunder', 'thi-glass' ),
 			'section'  => 'thig_sec_brand',
 			'control'  => 'color',
-			'default'  => '#3E8E5A',
+			'default'  => '#3E9A63',
 			'sanitize' => 'sanitize_hex_color',
 		)
 	);
@@ -139,7 +139,7 @@ function thig_customize_register( $wp_customize ) {
 			'label'       => __( 'Warna Aksen / CTA', 'thi-glass' ),
 			'section'     => 'thig_sec_brand',
 			'control'     => 'color',
-			'default'     => '#F2C94C',
+			'default'     => '#E4B94C',
 			'sanitize'    => 'sanitize_hex_color',
 			'description' => __( 'Warna teks di atasnya dipilih otomatis (putih/gelap) agar kontras memenuhi WCAG.', 'thi-glass' ),
 		)
@@ -203,7 +203,7 @@ function thig_customize_register( $wp_customize ) {
 	$add(
 		'load_google_fonts',
 		array(
-			'label'       => __( 'Muat Google Fonts (Lora + Inter)', 'thi-glass' ),
+			'label'       => __( 'Muat Google Fonts (Archivo + Public Sans)', 'thi-glass' ),
 			'section'     => 'thig_sec_glass',
 			'type'        => 'checkbox',
 			'default'     => true,
