@@ -15,43 +15,50 @@ yang memerlukan FTP.
 ### Apa artinya
 
 Pesan itu berasal dari PHP, bukan dari website Anda. Aplikasi memanggil database lewat PDO,
-lalu PHP menjawab bahwa **driver `pdo_mysql` tidak ada** pada versi PHP yang dipakai domain itu.
+lalu PHP menjawab bahwa **driver PDO untuk MySQL tidak ada**.
 
-Konsekuensinya penting: **database dan file website Anda kemungkinan besar baik-baik saja.**
-Yang kurang cuma satu centang ekstensi PHP. Jangan menginstal ulang aplikasi lewat Softaculous —
-itu justru berisiko menimpa data yang masih utuh.
+Konsekuensinya penting: **database dan file website Anda utuh.** Yang bermasalah setelan PHP,
+bukan datanya. Jangan menginstal ulang aplikasi lewat Softaculous — itu justru berisiko menimpa
+data yang masih baik.
 
-Alasan hanya satu domain yang kena: di cPanel, **versi PHP diatur per domain**. Domain lama
-Anda (`elibrary.thi.or.id`, `sdit.thi.or.id`) memakai versi PHP yang ekstensinya sudah lengkap,
-sedangkan `elibrary-smait.thi.or.id` yang baru dibuat jatuh ke versi default yang belum
-diaktifkan ekstensinya.
+### Kondisi hosting ini (sudah diperiksa langsung dari cPanel)
 
-### Perbaikan A — samakan versi PHP dengan domain yang sudah jalan (paling cepat)
+Hosting ini memakai **CloudLinux PHP Selector** — menu **Select PHP Version** di bagian
+**Software**. Menu **MultiPHP Manager** tidak tersedia, jadi versi PHP dan daftar ekstensi di
+halaman itu berlaku untuk **seluruh akun**, bukan per domain.
 
-1. cPanel → cari **MultiPHP Manager**.
-2. Lihat baris `elibrary.thi.or.id` (domain yang normal). **Catat versi PHP-nya**, misalnya `PHP 8.1`.
-3. Centang kotak di baris `elibrary-smait.thi.or.id`.
-4. Di kotak **PHP Version** kanan atas, pilih versi yang sama persis dengan langkah 2.
-5. Klik **Apply**, tunggu kira-kira 30 detik.
-6. Buka `https://elibrary-smait.thi.or.id` — muat ulang paksa dengan `Ctrl + F5`.
+Isi halaman tersebut:
 
-Kalau sudah terbuka, selesai. Kalau belum, lanjut ke Perbaikan B.
+| Hal | Nilai |
+| --- | --- |
+| Versi PHP akun | **8.3 (current)** |
+| `pdo` | aktif |
+| `pdo_mysql` | aktif |
+| `pdo_sqlite` | aktif |
+| `nd_mysqli` | aktif |
+| `nd_pdo_mysql` | mati |
 
-### Perbaikan B — aktifkan ekstensi `pdo_mysql`
+`nd_pdo_mysql` yang mati **bukan masalah**. Varian `nd_*` dan varian biasa adalah dua
+implementasi driver yang sama dan saling menggantikan — cukup satu yang aktif, dan di sini
+`pdo_mysql` sudah aktif. **Jangan mencentang keduanya.**
 
-1. cPanel → **Select PHP Version** (pada sebagian hosting namanya **PHP Selector**).
-   Kalau menu ini tidak ada, pakai **MultiPHP INI Editor** dan langsung ke Perbaikan C.
-2. Di kotak domain bagian atas, **pilih `elibrary-smait.thi.or.id`**. Ini sering terlewat —
-   kalau salah pilih domain, centangnya akan mendarat di website lain.
-3. Buka tab **Extensions**.
-4. Centang semuanya: `pdo`, `pdo_mysql`, `mysqli`, `mysqlnd`.
-   - Bila daftarnya menyediakan `nd_pdo_mysql` **dan** `pdo_mysql`, cukup centang **salah satu**.
-     Mencentang keduanya membuat PHP gagal start pada sebagian server.
-5. Perubahan tersimpan otomatis. Tunggu 30 detik, lalu buka website dengan `Ctrl + F5`.
+Kotak peringatan oranye yang muncul di halaman itu (*"igbinary enabled as dependency (redis)"*,
+*"msgpack enabled as dependency (redis)"*) juga bukan error, melainkan pemberitahuan bahwa
+mengaktifkan `redis` otomatis mengaktifkan ekstensi syaratnya.
 
-### Perbaikan C — kalau A dan B belum menyelesaikan
+### Kalau driver sudah aktif tapi website tetap error
 
-Jalankan alat diagnosa yang sudah disiapkan di folder ini:
+Artinya **website itu tidak berjalan pada PHP 8.3 yang tampil di halaman tersebut.** Ada
+override versi PHP yang khusus berlaku untuk folder domain itu — biasanya baris `AddHandler`
+atau `SetHandler` di `.htaccess`, atau berkas `php.ini`/`.user.ini` di dalam folder domain.
+Override semacam itu tidak terlihat sama sekali dari halaman PHP Selector.
+
+Jalankan `diagnosa.php` (langkah di bawah) untuk melihat versi PHP dan daftar driver PDO yang
+**sebenarnya** dipakai domain tersebut, bukan yang ditampilkan halaman PHP Selector. Alat itu
+sekaligus menampilkan isi `.htaccess`, `php.ini`, dan `.user.ini` yang ditemukannya di folder
+domain dan folder induknya.
+
+### Cara menjalankan `diagnosa.php`
 
 1. Buka `diagnosa.php` (di komputer Anda) dengan Notepad, ganti baris
 
@@ -63,9 +70,9 @@ Jalankan alat diagnosa yang sudah disiapkan di folder ini:
 2. cPanel → **File Manager** → masuk ke `public_html/elibrary-smait.thi.or.id`
    → tombol **Upload** → pilih `diagnosa.php`.
 3. Buka `https://elibrary-smait.thi.or.id/diagnosa.php`, masukkan kata sandi tadi.
-4. Baca bagian **Kesimpulan** di halaman paling atas. Alat itu menyebutkan penyebab pastinya
-   dan versi PHP mana di server ini yang punya `pdo_mysql`, jadi Anda tinggal memilih versi itu
-   di MultiPHP Manager.
+4. Baca bagian **Kesimpulan** di halaman paling atas. Alat itu menyebutkan penyebab pastinya,
+   driver PDO apa saja yang benar-benar termuat, dan isi berkas pilihan ekstensi PHP Selector
+   (`~/.cl.selector/defaults.cfg`) — cukup untuk memastikan centang tadi benar-benar berlaku.
 5. **Selesai memakainya, klik tombol merah "Hapus skrip ini dari server".**
 
 Alat itu juga memeriksa hal-hal yang tidak terlihat dari cPanel: file `.htaccess` atau `php.ini`
