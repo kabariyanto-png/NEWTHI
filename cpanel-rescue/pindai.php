@@ -148,7 +148,7 @@ function page_head($title) {
     echo '.box{background:#fff;border-radius:6px;padding:14px 16px;box-shadow:0 1px 2px rgba(0,0,0,.06);margin-bottom:12px}';
     echo '.v{border-left:4px solid #ccc;padding:12px 16px;margin:0 0 12px;background:#fff;border-radius:0 6px 6px 0}';
     echo '.v.bad{border-left-color:#a4262c}.v.ok{border-left-color:#186a3b}.v.warn{border-left-color:#d79f00}';
-    echo '.tinggi{color:#a4262c;font-weight:700}.sedang{color:#8a6100;font-weight:600}';
+    echo '.tinggi{color:#a4262c;font-weight:700}.sedang{color:#8a6100;font-weight:600}.ok{color:#186a3b;font-weight:600}';
     echo 'code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;word-break:break-all}';
     echo 'input[type=password],input[type=text]{padding:9px 10px;border:1px solid #c6ced6;border-radius:5px;font-size:14px}';
     echo 'button{padding:9px 16px;border:0;border-radius:5px;background:#2b6cb0;color:#fff;font-size:14px;cursor:pointer}';
@@ -241,23 +241,30 @@ if ($act === 'karantina') {
 
 /* ---------------------------- pemindaian ---------------------------- */
 
-$scanDir = isset($_POST['dir']) && $_POST['dir'] !== '' ? (string) $_POST['dir'] : $home . '/public_html';
-if (!is_dir($scanDir) || !within_home($scanDir, $home)) {
-    $scanDir = is_dir($home . '/public_html') ? $home . '/public_html' : $home;
+$otomatis = ($act === 'otomatis');
+
+if ($otomatis) {
+    $scanDir = $home;
+    $budget  = 420;
+} else {
+    $scanDir = isset($_POST['dir']) && $_POST['dir'] !== '' ? (string) $_POST['dir'] : $home . '/public_html';
+    if (!is_dir($scanDir) || !within_home($scanDir, $home)) {
+        $scanDir = is_dir($home . '/public_html') ? $home . '/public_html' : $home;
+    }
+    $budget = isset($_POST['budget']) ? intval($_POST['budget']) : 90;
+    if ($budget < 10) {
+        $budget = 10;
+    }
+    if ($budget > 600) {
+        $budget = 600;
+    }
 }
 $scanDir = rtrim(realpath($scanDir), '/');
 
-$budget = isset($_POST['budget']) ? intval($_POST['budget']) : 90;
-if ($budget < 10) {
-    $budget = 10;
-}
-if ($budget > 600) {
-    $budget = 600;
-}
-
-$doScan = ($act === 'pindai' || $act === 'karantina');
+$doScan = ($act === 'pindai' || $act === 'karantina' || $otomatis);
 
 $temuan   = array();
+$kosong   = array();
 $diperiksa = 0;
 $habisWaktu = false;
 
@@ -289,6 +296,13 @@ if ($doScan) {
                 $tumpuk[] = $p;
                 continue;
             }
+            $size = @filesize($p);
+
+            // Berkas index yang kosong membuat halaman tampil blank atau error.
+            if ($size === 0 && preg_match('#^index\.(php|html?)$#i', $it)) {
+                $kosong[] = array('path' => $p, 'mtime' => @filemtime($p));
+            }
+
             $e = strtolower(pathinfo($it, PATHINFO_EXTENSION));
             if (!in_array($e, $ext, true)) {
                 continue;
@@ -297,7 +311,6 @@ if ($doScan) {
             if (@realpath($p) === @realpath(__FILE__)) {
                 continue;
             }
-            $size = @filesize($p);
             if ($size === false || $size > 6 * 1024 * 1024) {
                 continue;
             }
@@ -346,6 +359,51 @@ if ($doScan) {
     });
 }
 
+/* Mode otomatis: karantina sendiri semua temuan bertingkat TINGGI. */
+$otoKarantina = array('ok' => 0, 'gagal' => array());
+if ($otomatis) {
+    foreach ($temuan as $i => $t) {
+        if ($t['tingkat'] !== 'tinggi') {
+            continue;
+        }
+        $baru = $t['path'] . '.KARANTINA-' . date('Ymd-His');
+        $sukses = @rename($t['path'], $baru);
+        if (!$sukses) {
+            @chmod(dirname($t['path']), 0755);
+            $sukses = @rename($t['path'], $baru);
+        }
+        if ($sukses) {
+            @chmod($baru, 0000);
+            $otoKarantina['ok']++;
+            $temuan[$i]['karantina'] = $baru;
+        } else {
+            $otoKarantina['gagal'][] = $t['path'];
+        }
+    }
+}
+
+/* Jadwal cron sering dipakai memasang ulang pintu belakang. */
+function baca_cron() {
+    $nonaktif = array_map('trim', explode(',', (string) @ini_get('disable_functions')));
+    foreach (array('shell_exec', 'exec') as $fn) {
+        if (!function_exists($fn) || in_array($fn, $nonaktif, true)) {
+            continue;
+        }
+        if ($fn === 'shell_exec') {
+            $out = @shell_exec('crontab -l 2>&1');
+        } else {
+            $buf = array();
+            @exec('crontab -l 2>&1', $buf);
+            $out = implode("\n", $buf);
+        }
+        if (is_string($out) && trim($out) !== '') {
+            return $out;
+        }
+    }
+    return null;
+}
+$cron = $doScan ? baca_cron() : null;
+
 /* ------------------------------ tampilan ------------------------------ */
 
 page_head('Pemindai Backdoor');
@@ -357,9 +415,19 @@ foreach ($pesan as $m) {
     echo '<div class="v ' . esc($m[0]) . '">' . $m[1] . '</div>';
 }
 
+echo '<div class="box"><form method="post" onsubmit="return confirm(\'Pindai seluruh akun dan karantina otomatis semua temuan tingkat TINGGI?\\n\\nBerkas diganti nama, bukan dihapus, jadi masih bisa dikembalikan.\')">';
+echo '<input type="hidden" name="k" value="' . esc($given) . '">';
+echo '<input type="hidden" name="act" value="otomatis">';
+echo '<p><b>Cara cepat — satu klik.</b> Memindai seluruh direktori home, lalu langsung '
+   . 'mengarantina setiap temuan bertingkat TINGGI tanpa perlu Anda centang satu per satu. '
+   . 'Karantina hanya mengganti nama berkas dan mematikan permission-nya, jadi selalu bisa dibatalkan.</p>';
+echo '<button class="danger" type="submit">Pindai seluruh akun &amp; bersihkan otomatis</button>';
+echo '</form></div>';
+
 echo '<div class="box"><form method="post">';
 echo '<input type="hidden" name="k" value="' . esc($given) . '">';
 echo '<input type="hidden" name="act" value="pindai">';
+echo '<p class="muted"><b>Cara manual</b> — pindai satu folder saja dan pilih sendiri apa yang dikarantina.</p>';
 echo '<div class="bar"><label>Folder yang dipindai</label>';
 echo '<input type="text" name="dir" value="' . esc($scanDir) . '" style="flex:1;min-width:280px">';
 echo '<label>Batas waktu (detik)</label><input type="text" name="budget" value="' . esc($budget) . '" size="4">';
@@ -375,6 +443,44 @@ if ($doScan) {
        . ($habisWaktu ? ' <span class="sedang">Batas waktu tercapai - pemindaian belum selesai.</span>' : '')
        . '</p>';
 
+    if ($otomatis) {
+        $jml = $otoKarantina['ok'];
+        echo '<div class="v ' . ($jml ? 'ok' : 'warn') . '"><b>' . esc($jml)
+           . ' berkas berbahaya sudah dikarantina otomatis.</b>';
+        echo '<p>Berkas diganti nama menjadi <code>&lt;nama asli&gt;.KARANTINA-&lt;tanggal&gt;</code> dengan '
+           . 'permission <code>000</code>, sehingga tidak bisa dijalankan lagi tetapi masih bisa diperiksa '
+           . 'atau dikembalikan.</p>';
+        if (count($otoKarantina['gagal'])) {
+            echo '<p>Gagal dikarantina (perlu ditangani manual lewat File Manager):</p><ul>';
+            foreach (array_slice($otoKarantina['gagal'], 0, 30) as $g) {
+                echo '<li><code>' . esc($g) . '</code></li>';
+            }
+            echo '</ul>';
+        }
+        echo '</div>';
+    }
+
+    if (count($kosong)) {
+        echo '<div class="v warn"><b>' . count($kosong) . ' berkas <code>index</code> berukuran 0 byte.</b>';
+        echo '<p>Berkas utama yang kosong membuat halaman tampil blank atau error. Perlu dipulihkan dari '
+           . 'backup atau dari berkas asli aplikasinya - jangan instal ulang lewat Softaculous, karena '
+           . 'database bisa tertimpa.</p><ul>';
+        foreach (array_slice($kosong, 0, 40) as $z) {
+            echo '<li><code>' . esc(str_replace($home . '/', '', $z['path'])) . '</code>'
+               . ($z['mtime'] ? ' <span class="muted">diubah ' . esc(date('d M Y H:i', $z['mtime'])) . '</span>' : '')
+               . '</li>';
+        }
+        echo '</ul></div>';
+    }
+
+    if ($cron !== null) {
+        echo '<div class="v warn"><b>Jadwal cron akun ini</b>';
+        echo '<p>Hapus baris yang tidak Anda buat lewat cPanel &gt; <b>Cron Jobs</b>. Penyerang biasa '
+           . 'memasang cron untuk memasang ulang pintu belakang setelah dibersihkan.</p>';
+        echo '<pre style="background:#0f1720;color:#e6edf3;padding:12px;border-radius:6px;overflow:auto;max-height:260px">'
+           . esc($cron) . '</pre></div>';
+    }
+
     if (!count($temuan)) {
         echo '<div class="v ok"><b>Tidak ada yang cocok dengan pola yang dikenali.</b>'
            . '<p>Ini bukan jaminan bersih - pemindai hanya mengenali pola yang sudah diketahui. '
@@ -388,10 +494,16 @@ if ($doScan) {
         echo '<table><thead><tr><th style="width:34px"><input type="checkbox" onclick="var b=this.form.querySelectorAll(\'input[name^=target]\');for(var i=0;i<b.length;i++)b[i].checked=this.checked"></th>';
         echo '<th>Berkas</th><th style="width:90px">Tingkat</th><th style="width:150px">Diubah</th><th>Penanda yang cocok</th></tr></thead><tbody>';
         foreach ($temuan as $t) {
-            echo '<tr><td><input type="checkbox" name="target[]" value="' . esc($t['path']) . '"'
-               . ($t['tingkat'] === 'tinggi' ? ' checked' : '') . '></td>';
+            $sudah = isset($t['karantina']);
+            echo '<tr><td>';
+            if (!$sudah) {
+                echo '<input type="checkbox" name="target[]" value="' . esc($t['path']) . '"'
+                   . ($t['tingkat'] === 'tinggi' ? ' checked' : '') . '>';
+            }
+            echo '</td>';
             echo '<td><code>' . esc(str_replace($home . '/', '', $t['path'])) . '</code><br>'
-               . '<span class="muted">' . esc(human_bytes($t['size'])) . '</span></td>';
+               . '<span class="muted">' . esc(human_bytes($t['size']))
+               . ($sudah ? ' &middot; <span class="ok">sudah dikarantina</span>' : '') . '</span></td>';
             echo '<td class="' . esc($t['tingkat']) . '">' . esc(strtoupper($t['tingkat'])) . '</td>';
             echo '<td class="muted">' . esc($t['mtime'] ? date('d M Y H:i', $t['mtime']) : '-') . '</td>';
             echo '<td class="muted">' . esc(implode('; ', $t['cocok'])) . '</td></tr>';
