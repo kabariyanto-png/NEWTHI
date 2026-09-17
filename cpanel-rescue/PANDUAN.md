@@ -1,12 +1,108 @@
 # Panduan Perbaikan Hosting cPanel
 
-Dua masalah yang ditangani:
+Masalah yang ditangani:
 
-1. `elibrary-smait.thi.or.id` menampilkan tulisan **"could not find driver"**.
-2. Tombol **Delete** di cPanel File Manager tidak bereaksi.
+1. **Akun ini disusupi pintu belakang (backdoor).** Ini yang paling mendesak — lihat Bagian 0.
+2. `elibrary-smait.thi.or.id` menampilkan tulisan **"could not find driver"**.
+3. Tombol **Delete** di cPanel File Manager tidak bereaksi.
 
 Semua langkah di bawah dikerjakan lewat **browser** (cPanel + File Manager). Tidak ada satu pun
 yang memerlukan FTP.
+
+---
+
+## Bagian 0 — Pintu belakang di akun ini (kerjakan lebih dulu)
+
+### Apa yang ditemukan
+
+Di folder `public_html/perpustakaan.thi.or.id` terdapat berkas PHP bernama acak yang bukan
+bagian dari SLiMS:
+
+| Berkas | Ukuran | Tanggal |
+| --- | --- | --- |
+| `bashtdvaz61zoneleuCfm.php` | 146,19 KB | 29 Agu 2026 |
+| `lvsoeIj44frkjehrwqygCfm.php` | 5,13 KB | 30 Agu 2026 |
+| `uopae61njiuk4gxoaCfm.php` | — | — |
+
+Seluruh berkas asli SLiMS di folder yang sama tertanggal 24 Jun 2026.
+
+Isi `lvsoeIj44frkjehrwqygCfm.php` sudah diperiksa. Berkas itu **loader**: ia mengunduh kode PHP
+dari `https://gitlab.com/knightchaos57/logosaja/-/raw/main/ak.txt` (alamatnya disamarkan dalam
+base64), lalu menjalankannya dengan `eval()`. Untuk memastikan berhasil, ia mencoba sepuluh cara
+berbeda secara berurutan — `file_get_contents`, `curl`, `SplFileObject`, `fopen`, `fsockopen`,
+`stream_socket_client`, fungsi `socket_*`, sampai memanggil `curl`/`wget` lewat `proc_open`,
+`exec`, `shell_exec`, dan `passthru`.
+
+Nama-nama fungsinya disamarkan lewat pemotongan string (`'file'.'_get'.'_con'.'tent'.'s'`) dan
+escape heksadesimal (`"\x65\x78\x65\x63"`) agar lolos dari pemindai sederhana.
+
+Parameter `$_GET['uu']` membuat siapa pun yang mengetahui alamat berkas itu dapat menunjuk ke URL
+mana pun dan menjalankan kode apa pun. **Ini kendali penuh atas akun hosting dari jarak jauh**,
+dan isi serangannya bisa diganti kapan saja tanpa menyentuh server lagi.
+
+Temuan lain di folder yang sama:
+
+- `index.php` berukuran **0 byte** (diubah 15 Sep 2026) — inilah sebab halaman tidak tampil.
+- `.htaccess` berisi aturan permalink **WordPress**, padahal isi foldernya SLiMS. Berkas ini
+  sendiri **bersih**, bukan malware.
+- `google17f707bafb8849f4.html` — berkas verifikasi Google Search Console. Periksa di
+  [Search Console](https://search.google.com/search-console) apakah ada pemilik yang tidak Anda
+  kenal; penyerang memakai ini untuk mengklaim situs korban.
+
+### Urutan penanganan
+
+Kerjakan berurutan. Melewati langkah 1 membuat sisanya sia-sia.
+
+**1. Ganti semua kata sandi — paling mendesak.**
+cPanel, seluruh akun FTP, user database MySQL, admin SLiMS, admin WordPress setiap situs, dan
+akun email. Selama kata sandi lama masih berlaku, penyerang bisa masuk lagi kapan saja.
+
+**2. Jalankan `pindai.php` untuk menemukan sisanya.**
+Akun ini berisi belasan domain dalam satu direktori home, sehingga **satu situs yang tembus
+berarti seluruh akun terpapar.** Cara memakainya ada di bawah. Pindai `public_html` secara
+keseluruhan, lalu karantina semua temuan bertingkat TINGGI.
+
+**3. cPanel → Cron Jobs.**
+Hapus jadwal yang tidak Anda buat. Penyerang biasa memasang cron untuk memasang ulang pintu
+belakang beberapa menit setelah dihapus — tanpa langkah ini, pembersihan akan terulang terus.
+
+**4. cPanel → FTP Accounts, Email Accounts, dan Manage Team.**
+Hapus akun yang tidak Anda kenali.
+
+**5. Minta backup ke penyedia hosting.**
+Minta backup akun bertanggal **sebelum 29 Agustus 2026**. Memulihkan dari backup bersih jauh
+lebih aman dan lebih cepat daripada membersihkan manual.
+
+**6. Perbarui semua aplikasi.**
+WordPress beserta seluruh plugin dan tema, SLiMS, dan Moodle. Celah masuknya hampir selalu ada
+pada aplikasi atau plugin yang sudah usang — tanpa langkah ini, situs akan tembus lagi.
+
+### Cara memakai `pindai.php`
+
+1. Buka `pindai.php` dengan Notepad, ganti `GANTI_KATA_SANDI_INI` dengan kata sandi bebas milik
+   Anda, simpan.
+2. cPanel → **File Manager** → **Upload** ke folder mana pun di `public_html`.
+3. Buka `https://domain-anda/pindai.php`, masukkan kata sandi.
+4. Isi kolom folder dengan `/home/NAMA-AKUN/public_html`, lalu **Mulai pindai**.
+   Kalau batas waktu tercapai sebelum selesai, pindai per folder domain satu per satu.
+5. Temuan **TINGGI** sudah tercentang otomatis — periksa sekilas, lalu klik
+   **Karantina yang dicentang**.
+6. Temuan **SEDANG** perlu Anda lihat isinya dulu (File Manager → klik kanan → View). Pustaka
+   pihak ketiga yang sah kadang ikut tertandai.
+7. **Selesai memakainya, klik "Hapus skrip ini dari server".**
+
+Karantina **tidak menghapus** berkas — hanya mengganti namanya menjadi
+`<nama asli>.KARANTINA-<tanggal>` dan menjadikan permission-nya `000`, sehingga tidak bisa
+dijalankan lagi tetapi masih bisa diperiksa atau dikembalikan bila ternyata keliru.
+
+### Memulihkan `perpustakaan.thi.or.id`
+
+Setelah pembersihan selesai, `index.php` yang 0 byte perlu diisi ulang. **Jangan instal ulang
+lewat Softaculous** — itu menimpa database. Unduh SLiMS versi yang sama dari
+[slims.web.id](https://slims.web.id), lalu salin kembali hanya berkas program yang hilang.
+Yang **tidak boleh** ditimpa: `sysconfig.local.inc.php` (pengaturan koneksi database) dan folder
+`files/`, `images/`, `repository/` (dokumen, sampul, dan berkas unggahan). Database berisi data
+buku dan anggota Anda tidak tersentuh oleh proses ini.
 
 ---
 
@@ -84,6 +180,8 @@ database langsung.
 - **Jangan** menginstal ulang aplikasi lewat Softaculous sebelum penyebabnya jelas — database lama
   bisa tertimpa.
 - **Jangan** menghapus folder `public_html/elibrary-smait.thi.or.id`. File-nya tidak rusak.
+- **Jangan** membuka berkas mencurigakan lewat alamat webnya di browser — itu menjalankannya.
+  Gunakan File Manager → klik kanan → **View**, yang hanya menampilkan isinya.
 
 ---
 
@@ -138,12 +236,13 @@ file **langsung dan permanen tanpa melewati `.trash`**, sehingga tetap bekerja w
 
 ## Catatan keamanan
 
-`diagnosa.php` dan `hapus.php` adalah **alat sementara**, bukan bagian dari website.
+`diagnosa.php`, `hapus.php`, dan `pindai.php` adalah **alat sementara**, bukan bagian dari website.
 
 - Keduanya minta kata sandi dan menolak jalan sebelum Anda mengisinya.
 - `hapus.php` mengunci semua operasi di dalam direktori home Anda; path `../`, symlink yang
   menunjuk keluar, dan direktori home itu sendiri ditolak.
 - Keduanya mengirim header `noindex` supaya tidak terindeks Google.
 
-Meski begitu, **hapus kedua file dari server begitu pekerjaan selesai**. Masing-masing punya
-tombol hapus-diri di bagian bawah halaman. Jangan pakai kata sandi yang sama dengan cPanel Anda.
+Meski begitu, **hapus ketiga berkas dari server begitu pekerjaan selesai**. Masing-masing punya
+tombol hapus-diri di bagian bawah halaman. Jangan pakai kata sandi yang sama dengan cPanel Anda —
+terlebih karena akun ini sedang dalam kondisi tersusupi.
